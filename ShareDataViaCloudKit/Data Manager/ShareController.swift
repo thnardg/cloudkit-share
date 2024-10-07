@@ -21,6 +21,7 @@ struct CloudSharingView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UICloudSharingController {
         share[CKShare.SystemFieldKey.title] = room.name
+        share.publicPermission = .readWrite
         let controller = UICloudSharingController(share: share, container: container)
         controller.modalPresentationStyle = .formSheet
         controller.delegate = context.coordinator
@@ -56,6 +57,12 @@ class CloudSharingCoordinator:NSObject,UICloudSharingControllerDelegate{
             // lidar com a lógica de quando parar de compartilhar aqui
         }
     }
+    
+    func countParticipants(for share: CKShare) -> Bool {
+        return share.participants.count >= 2
+    }
+    
+    
     static let shared = CloudSharingCoordinator()
     let stack = CoreDataStack.shared
     var room:Room?

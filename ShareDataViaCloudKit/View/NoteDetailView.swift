@@ -9,8 +9,6 @@ struct NoteDetailView: View {
     let room: Room // instância da "sala" compartilhada
     @StateObject private var viewModel = NoteDetailViewModel()
     @FetchRequest private var notes: FetchedResults<Note> // fetch do dado compartilhado
-    @FetchRequest private var counters: FetchedResults<Counter> // fetch do dado compartilhado
-    @State private var showShareController = false
 
     // inicializa a sala com as infos que foram compartilhadas nela
     init(room: Room) {
@@ -21,41 +19,11 @@ struct NoteDetailView: View {
                               sortDescriptors: [NSSortDescriptor(keyPath: \Note.timestamp, ascending: false)],
                               predicate: NSPredicate(format: "%K = %@", #keyPath(Note.room), room), // faz a busca de todos os dados que fazem parte dessa sala específica
                               animation: .default)
-        
-        _counters = FetchRequest(entity: Counter.entity(),
-                                 sortDescriptors: [],
-                                 predicate: NSPredicate(format: "%K = %@", #keyPath(Counter.room), room),
-                                 animation: .default)
     }
 
     var body: some View {
         VStack {
-            if let counter = counters.first { //checa se existe um contador
-                HStack {
-                    VStack{
-                        Text("User 1: \(counter.userOneCount)")
-                            .font(.headline)
-                            .padding()
-                        Text("User 2: \(counter.userTwoCount)")
-                            .font(.headline)
-                            .padding()
-
-                    }
-
-                    Button(action: {
-                        viewModel.incrementCounter(counter, for: room)
-                    }) {
-                        Text("Counted")
-                            .font(.system(size: 24))
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                    }
-                }
-                .padding()
-            }
-            
+                CounterView(room: room)
             List {
                 ForEach(notes) { note in
                     Text(note.text ?? "")
@@ -97,38 +65,6 @@ struct NoteDetailView: View {
                 .padding()
             }
         }
-        .toolbar {
-            ToolbarItem {
-                HStack {
-                    if viewModel.sharing {
-                        ProgressView()
-                    }
-
-                    Button {
-                        if viewModel.isShared(room: room) {
-                            showShareController = true
-                        } else {
-                            Task.detached {
-                                await viewModel.createShare(for: room)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
-                .controlGroupStyle(.navigation)
-            }
-        }
         .navigationTitle(room.name ?? "")
-        .sheet(isPresented: $showShareController) {
-            let share = CoreDataStack.shared.getShare(room)!
-            CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)
-                .ignoresSafeArea()
-        }
-        .onAppear {
-            if counters.isEmpty {
-                viewModel.createCounter(for: room)
-            }
-        }
     }
 }

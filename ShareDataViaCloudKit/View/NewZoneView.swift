@@ -20,7 +20,7 @@ struct NewZoneView: View {
                 List {
                     ForEach(rooms) { room in
                         NavigationLink {
-                            NoteDetailView(room: room)
+                            ShareRoomView(room: room)
                         } label: {
                             HStack {
                                 Text(room.name ?? "")

@@ -22,6 +22,7 @@
 		2F4A95A02CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A959F2CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift */; };
 		2FAA907B2CB027B900F74C70 /* NewZoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907A2CB027B900F74C70 /* NewZoneViewModel.swift */; };
 		2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */; };
+		2FE79F2F2CB3B38B000F812D /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE79F2E2CB3B38B000F812D /* CounterView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		2F4A959F2CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Sharing.swift"; sourceTree = "<group>"; };
 		2FAA907A2CB027B900F74C70 /* NewZoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewZoneViewModel.swift; sourceTree = "<group>"; };
 		2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
+		2FE79F2E2CB3B38B000F812D /* CounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				2F3B40772CAE329B00ECB3B4 /* NewZoneView.swift */,
 				2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */,
 				2F4A95982CB388250068FEA5 /* ShareRoomView.swift */,
+				2FE79F2E2CB3B38B000F812D /* CounterView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */,
 				2F4A95A02CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift in Sources */,
 				2F4A95952CB370920068FEA5 /* Model.xcdatamodeld in Sources */,
+				2FE79F2F2CB3B38B000F812D /* CounterView.swift in Sources */,
 				2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */,
 				2F3B40762CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift in Sources */,
 				2F3B40882CAE341100ECB3B4 /* NoteDetailView.swift in Sources */,
