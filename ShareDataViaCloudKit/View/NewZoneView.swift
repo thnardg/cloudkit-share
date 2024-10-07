@@ -10,22 +10,22 @@ import CoreData
 
 // Essa View lida com as "Salas" compartilhadas
 struct NewZoneView: View {
-        @FetchRequest(entity: Note.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Note.timestamp, ascending: false)], animation: .default)
-        private var notes: FetchedResults<Note>
+        @FetchRequest(entity: Room.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Room.timestamp, ascending: false)], animation: .default)
+        private var rooms: FetchedResults<Room>
         @StateObject private var viewModel = NewZoneViewModel()
         @State private var id = UUID()
         
         var body: some View {
             NavigationView {
                 List {
-                    ForEach(notes) { note in
+                    ForEach(rooms) { room in
                         NavigationLink {
-                            NoteDetailView(note: note)
+                            NoteDetailView(room: room)
                         } label: {
                             HStack {
-                                Text(note.name ?? "")
-                                if viewModel.isShared(note) {
-                                    if viewModel.isOwner(note) {
+                                Text(room.name ?? "")
+                                if viewModel.isShared(room) {
+                                    if viewModel.isOwner(room) {
                                         Image(systemName: "person.2.fill")
                                             .foregroundColor(.blue)
                                     } else {
@@ -33,7 +33,7 @@ struct NewZoneView: View {
                                             .foregroundColor(.green)
                                     }
                                 }
-                                if !viewModel.canEdit(note) {
+                                if !viewModel.canEdit(room) {
                                     Image(systemName: "pencil.slash")
                                         .foregroundColor(.red)
                                 }
@@ -41,10 +41,10 @@ struct NewZoneView: View {
                             .id(id)
                         }
                         .swipeActions {
-                            if viewModel.canEdit(note) {
+                            if viewModel.canEdit(room) {
                                 Button(role: .destructive) {
                                     withAnimation {
-                                        viewModel.deleteNote(note)
+                                        viewModel.deleteRoom(room)
                                     }
                                 } label: {
                                     Label("Del", systemImage: "trash")
@@ -57,7 +57,7 @@ struct NewZoneView: View {
                     ToolbarItem {
                         Button {
                             withAnimation {
-                                viewModel.addNote()
+                                viewModel.addRoom()
                             }
                         } label: {
                             Image(systemName: "plus")

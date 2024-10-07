@@ -6,25 +6,25 @@ import UIKit
 
 // VIEW DAS INFOS COMPARTILHADAS
 struct NoteDetailView: View {
-    let note: Note // instância da "sala" compartilhada
+    let room: Room // instância da "sala" compartilhada
     @StateObject private var viewModel = NoteDetailViewModel()
-    @FetchRequest private var memos: FetchedResults<Memo> // fetch do dado compartilhado
+    @FetchRequest private var notes: FetchedResults<Note> // fetch do dado compartilhado
     @FetchRequest private var counters: FetchedResults<Counter> // fetch do dado compartilhado
     @State private var showShareController = false
 
     // inicializa a sala com as infos que foram compartilhadas nela
-    init(note: Note) {
-        self.note = note
+    init(room: Room) {
+        self.room = room
         
         // faz o fetch das entidades, e determina em qual ordem mostrar as coisas (o que tá determinando o sort é o timestamp, em ordem decrescente)
-        _memos = FetchRequest(entity: Memo.entity(),
-                              sortDescriptors: [NSSortDescriptor(keyPath: \Memo.timestamp, ascending: false)],
-                              predicate: NSPredicate(format: "%K = %@", #keyPath(Memo.note), note), // faz a busca de todos os dados que fazem parte dessa sala específica
+        _notes = FetchRequest(entity: Note.entity(),
+                              sortDescriptors: [NSSortDescriptor(keyPath: \Note.timestamp, ascending: false)],
+                              predicate: NSPredicate(format: "%K = %@", #keyPath(Note.room), room), // faz a busca de todos os dados que fazem parte dessa sala específica
                               animation: .default)
         
         _counters = FetchRequest(entity: Counter.entity(),
                                  sortDescriptors: [],
-                                 predicate: NSPredicate(format: "%K = %@", #keyPath(Counter.note), note),
+                                 predicate: NSPredicate(format: "%K = %@", #keyPath(Counter.room), room),
                                  animation: .default)
     }
 
@@ -43,7 +43,7 @@ struct NoteDetailView: View {
                     }
 
                     Button(action: {
-                        viewModel.incrementCounter(counter, for: note)
+                        viewModel.incrementCounter(counter, for: room)
                     }) {
                         Text("Counted")
                             .font(.system(size: 24))
@@ -57,17 +57,17 @@ struct NoteDetailView: View {
             }
             
             List {
-                ForEach(memos) { memo in
-                    Text(memo.text ?? "")
+                ForEach(notes) { note in
+                    Text(note.text ?? "")
                         .swipeActions {
-                            if viewModel.canEdit(note: note) {
+                            if viewModel.canEdit(room: room) {
                                 Button(role: .destructive) {
-                                    viewModel.deleteMemo(memo)
+                                    viewModel.deleteNote(note)
                                 } label: {
                                     Label("Del", systemImage: "trash")
                                 }
                                 Button {
-                                    viewModel.changeMemoText(memo)
+                                    viewModel.changeNoteText(note)
                                 } label: {
                                     Label("Edit", systemImage: "square.and.pencil")
                                 }
@@ -77,22 +77,22 @@ struct NoteDetailView: View {
                 }
             }
 
-            if viewModel.canEdit(note: note) {
+            if viewModel.canEdit(room: room) {
                 HStack {
-                    TextField("Write your note here...", text: $viewModel.newMemoText)
+                    TextField("Write your note here...", text: $viewModel.newNoteText)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
 
                     Button(action: {
                         withAnimation {
-                            viewModel.addMemo(to: note)
+                            viewModel.addNote(to: room)
                         }
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 24))
                     }
                     .padding()
-                    .disabled(viewModel.newMemoText.isEmpty)
+                    .disabled(viewModel.newNoteText.isEmpty)
                 }
                 .padding()
             }
@@ -105,11 +105,11 @@ struct NoteDetailView: View {
                     }
 
                     Button {
-                        if viewModel.isShared(note: note) {
+                        if viewModel.isShared(room: room) {
                             showShareController = true
                         } else {
                             Task.detached {
-                                await viewModel.createShare(for: note)
+                                await viewModel.createShare(for: room)
                             }
                         }
                     } label: {
@@ -119,15 +119,15 @@ struct NoteDetailView: View {
                 .controlGroupStyle(.navigation)
             }
         }
-        .navigationTitle(note.name ?? "")
+        .navigationTitle(room.name ?? "")
         .sheet(isPresented: $showShareController) {
-            let share = CoreDataStack.shared.getShare(note)!
-            CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, note: note)
+            let share = CoreDataStack.shared.getShare(room)!
+            CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)
                 .ignoresSafeArea()
         }
         .onAppear {
             if counters.isEmpty {
-                viewModel.createCounter(for: note)
+                viewModel.createCounter(for: room)
             }
         }
     }

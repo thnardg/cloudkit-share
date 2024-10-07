@@ -13,18 +13,18 @@ import UIKit
 struct CloudSharingView: UIViewControllerRepresentable {
     let share: CKShare
     let container: CKContainer
-    let note:Note
+    let room:Room
 
     func makeCoordinator() -> CloudSharingCoordinator {
         CloudSharingCoordinator.shared
     }
 
     func makeUIViewController(context: Context) -> UICloudSharingController {
-        share[CKShare.SystemFieldKey.title] = note.name
+        share[CKShare.SystemFieldKey.title] = room.name
         let controller = UICloudSharingController(share: share, container: container)
         controller.modalPresentationStyle = .formSheet
         controller.delegate = context.coordinator
-        context.coordinator.note = note
+        context.coordinator.room = room
         return controller
     }
 
@@ -39,7 +39,7 @@ class CloudSharingCoordinator:NSObject,UICloudSharingControllerDelegate{
     }
 
     func itemTitle(for csc: UICloudSharingController) -> String? {
-        note?.name
+        room?.name
     }
 
     func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController){
@@ -48,9 +48,9 @@ class CloudSharingCoordinator:NSObject,UICloudSharingControllerDelegate{
 
     func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController){
 
-        guard let note = note else {return}
-        if !stack.isOwner(object: note) {
-            stack.deleteNote(note)
+        guard let room = room else {return}
+        if !stack.isOwner(object: room) {
+            stack.deleteRoom(room)
         }
         else {
             // lidar com a lógica de quando parar de compartilhar aqui
@@ -58,7 +58,7 @@ class CloudSharingCoordinator:NSObject,UICloudSharingControllerDelegate{
     }
     static let shared = CloudSharingCoordinator()
     let stack = CoreDataStack.shared
-    var note:Note?
+    var room:Room?
 }
 
 

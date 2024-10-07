@@ -82,62 +82,8 @@ final class CoreDataStack {
     }
 }
 
-extension CoreDataStack {
-    func isShared(objectID: NSManagedObjectID) -> Bool {
-        var isShared = false
-        if let persistentStore = objectID.persistentStore {
-            if persistentStore == sharedPersistentStore {
-                isShared = true
-            } else {
-                let container = persistentContainer
-                do {
-                    let shares = try container.fetchShares(matching: [objectID])
-                    if shares.first != nil {
-                        isShared = true
-                    }
-                } catch {
-                    print("Failed to fetch share for \(objectID): \(error)")
-                }
-            }
-        }
-        return isShared
-    }
 
-    func isShared(object: NSManagedObject) -> Bool {
-        isShared(objectID: object.objectID)
-    }
-
-    func canEdit(object: NSManagedObject) -> Bool {
-        return persistentContainer.canUpdateRecord(forManagedObjectWith: object.objectID)
-    }
-
-    func canDelete(object: NSManagedObject) -> Bool {
-        return persistentContainer.canDeleteRecord(forManagedObjectWith: object.objectID)
-    }
-
-    func isOwner(object: NSManagedObject) -> Bool {
-        guard isShared(object: object) else { return false }
-        guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
-            print("Get ckshare error")
-            return false
-        }
-        if let currentUser = share.currentUserParticipant, currentUser == share.owner {
-            return true
-        }
-        return false
-    }
-
-    func getShare(_ note: Note) -> CKShare? {
-        guard isShared(object: note) else { return nil }
-        guard let share = try? persistentContainer.fetchShares(matching: [note.objectID])[note.objectID] else {
-            print("Get ckshare error")
-            return nil
-        }
-        share[CKShare.SystemFieldKey.title] = note.name
-        return share
-    }
-}
-
+// MARK: -- SALVAR NO CORE DATA
 extension CoreDataStack {
     func save() {
         if context.hasChanges {
@@ -148,22 +94,36 @@ extension CoreDataStack {
             }
         }
     }
+}
 
-    func addNote() {
-        let note = Note(context: context)
+// MARK: -- SALA
+extension CoreDataStack {
+    func addRoom() {
+        let room = Room(context: context)
         context.perform {
-            note.name = "Note\(Int.random(in: 1000...2000))"
-            note.timestamp = Date()
+            room.name = "SALA \(Int.random(in: 1000...2000))"
+            room.timestamp = Date()
             self.save()
         }
     }
 
-    func addMemo(_ note: Note, text: String) {
-        let memo = Memo(context: context)
+    func deleteRoom(_ room: Room) {
         context.perform {
-            memo.note = note
-            memo.text = text
-            memo.timestamp = Date()
+            self.context.delete(room)
+            self.save()
+        }
+    }
+}
+
+
+// MARK: -- RECADOS
+extension CoreDataStack {
+    func addNote(_ room: Room, text: String) {
+        let note = Note(context: context)
+        context.perform {
+            note.room = room
+            note.text = text
+            note.timestamp = Date()
             self.save()
         }
     }
@@ -175,36 +135,22 @@ extension CoreDataStack {
         }
     }
 
-    func deleteMemo(_ memo: Memo) {
+    func changeNoteText(_ note: Note) {
         context.perform {
-            self.context.delete(memo)
+            let text = note.text ?? ""
+            note.text = text.appending(String(" \(Int.random(in: 0...9))"))
             self.save()
-        }
-    }
-
-    func changeMemoText(_ memo: Memo) {
-        context.perform {
-            let text = memo.text ?? ""
-            memo.text = text.appending(String(" \(Int.random(in: 0...9))"))
-            self.save()
-        }
-    }
-
-    func delShare(_ share: CKShare?) async {
-        guard let share = share else { return }
-        do {
-            try await ckContainer.privateCloudDatabase.deleteRecord(withID: share.recordID)
-        } catch {
-            print("Failed to delete ckshare in icloud, error: \(error)")
         }
     }
 }
 
+
+// MARK: -- CONTADOR
 extension CoreDataStack {
-    func addCounter(to note: Note) {
+    func addCounter(to room: Room) {
         let counter = Counter(context: context)
         context.perform {
-            counter.note = note
+            counter.room = room
             counter.userOneCount = 0
             counter.userTwoCount = 0
             self.save()
@@ -214,20 +160,6 @@ extension CoreDataStack {
     func incrementCounter(_ counter: Counter) {
         context.perform {
             self.save()
-        }
-    }
-
-    func fetchCounter(for note: Note) -> Counter? {
-        let request: NSFetchRequest<Counter> = Counter.fetchRequest()
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(Counter.note), note)
-        request.fetchLimit = 1
-        
-        do {
-            let counters = try context.fetch(request)
-            return counters.first
-        } catch {
-            print("Failed to fetch Counter for Note: \(error)")
-            return nil
         }
     }
 }
