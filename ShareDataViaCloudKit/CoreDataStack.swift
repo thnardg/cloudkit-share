@@ -205,14 +205,14 @@ extension CoreDataStack {
         let counter = Counter(context: context)
         context.perform {
             counter.note = note
-            counter.count = 0
+            counter.userOneCount = 0
+            counter.userTwoCount = 0
             self.save()
         }
     }
 
     func incrementCounter(_ counter: Counter) {
         context.perform {
-            counter.count += 1
             self.save()
         }
     }

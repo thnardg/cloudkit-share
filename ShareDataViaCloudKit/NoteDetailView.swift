@@ -32,12 +32,18 @@ struct NoteDetailView: View {
         VStack {
             if let counter = counters.first { //checa se existe um contador
                 HStack {
-                    Text("Count: \(counter.count)")
-                        .font(.headline)
-                        .padding()
+                    VStack{
+                        Text("User 1: \(counter.userOneCount)")
+                            .font(.headline)
+                            .padding()
+                        Text("User 2: \(counter.userTwoCount)")
+                            .font(.headline)
+                            .padding()
+
+                    }
 
                     Button(action: {
-                        viewModel.incrementCounter(counter)
+                        viewModel.incrementCounter(counter, for: note)
                     }) {
                         Text("Counted")
                             .font(.system(size: 24))

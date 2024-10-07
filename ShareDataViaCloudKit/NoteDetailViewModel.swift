@@ -29,9 +29,15 @@ class NoteDetailViewModel: ObservableObject {
         stack.changeMemoText(memo)
     }
 
-        func incrementCounter(_ counter: Counter) {
-            stack.incrementCounter(counter)
+    func incrementCounter(_ counter: Counter, for note: Note) {
+        if stack.isOwner(object: note) {
+            counter.userOneCount += 1
+        } else {
+            counter.userTwoCount += 1
         }
+        self.stack.incrementCounter(counter)
+    }
+
 
         func createCounter(for note: Note) {
             stack.addCounter(to: note)

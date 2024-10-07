@@ -17,6 +17,8 @@
 		2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */; };
 		2F3B40922CAE3EBF00ECB3B4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3B40912CAE3EBF00ECB3B4 /* CloudKit.framework */; };
 		2F4A95952CB370920068FEA5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A95932CB370920068FEA5 /* Model.xcdatamodeld */; };
+		2F4A95992CB388250068FEA5 /* ShareRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A95982CB388250068FEA5 /* ShareRoomView.swift */; };
+		2F4A959B2CB388460068FEA5 /* ShareRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */; };
 		2FAA907B2CB027B900F74C70 /* NewZoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907A2CB027B900F74C70 /* NewZoneViewModel.swift */; };
 		2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +37,8 @@
 		2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		2F3B40912CAE3EBF00ECB3B4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		2F4A95942CB370920068FEA5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		2F4A95982CB388250068FEA5 /* ShareRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRoomView.swift; sourceTree = "<group>"; };
+		2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRoomViewModel.swift; sourceTree = "<group>"; };
 		2FAA907A2CB027B900F74C70 /* NewZoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewZoneViewModel.swift; sourceTree = "<group>"; };
 		2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +83,8 @@
 				2FAA907A2CB027B900F74C70 /* NewZoneViewModel.swift */,
 				2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */,
 				2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */,
+				2F4A95982CB388250068FEA5 /* ShareRoomView.swift */,
+				2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */,
 				2F3B40892CAE342C00ECB3B4 /* CoreDataStack.swift */,
 				2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */,
 				2F4A95932CB370920068FEA5 /* Model.xcdatamodeld */,
@@ -175,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2F3B408A2CAE342C00ECB3B4 /* CoreDataStack.swift in Sources */,
+				2F4A95992CB388250068FEA5 /* ShareRoomView.swift in Sources */,
 				2F3B40862CAE33D000ECB3B4 /* AppDelegate.swift in Sources */,
 				2F3B40782CAE329B00ECB3B4 /* NewZoneView.swift in Sources */,
 				2FAA907B2CB027B900F74C70 /* NewZoneViewModel.swift in Sources */,
@@ -183,6 +190,7 @@
 				2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */,
 				2F3B40762CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift in Sources */,
 				2F3B40882CAE341100ECB3B4 /* NoteDetailView.swift in Sources */,
+				2F4A959B2CB388460068FEA5 /* ShareRoomViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
