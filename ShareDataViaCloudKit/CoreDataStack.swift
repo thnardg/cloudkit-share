@@ -199,3 +199,35 @@ extension CoreDataStack {
         }
     }
 }
+
+extension CoreDataStack {
+    func addCounter(to note: Note) {
+        let counter = Counter(context: context)
+        context.perform {
+            counter.note = note
+            counter.count = 0
+            self.save()
+        }
+    }
+
+    func incrementCounter(_ counter: Counter) {
+        context.perform {
+            counter.count += 1
+            self.save()
+        }
+    }
+
+    func fetchCounter(for note: Note) -> Counter? {
+        let request: NSFetchRequest<Counter> = Counter.fetchRequest()
+        request.predicate = NSPredicate(format: "%K == %@", #keyPath(Counter.note), note)
+        request.fetchLimit = 1
+        
+        do {
+            let counters = try context.fetch(request)
+            return counters.first
+        } catch {
+            print("Failed to fetch Counter for Note: \(error)")
+            return nil
+        }
+    }
+}
