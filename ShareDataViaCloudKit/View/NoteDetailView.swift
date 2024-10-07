@@ -8,6 +8,7 @@ import UIKit
 struct NoteDetailView: View {
     let room: Room // instância da "sala" compartilhada
     @StateObject private var viewModel = NoteDetailViewModel()
+    @StateObject private var sharingManager = ShareRoomViewModel()
     @FetchRequest private var notes: FetchedResults<Note> // fetch do dado compartilhado
 
     // inicializa a sala com as infos que foram compartilhadas nela
@@ -28,7 +29,7 @@ struct NoteDetailView: View {
                 ForEach(notes) { note in
                     Text(note.text ?? "")
                         .swipeActions {
-                            if viewModel.canEdit(room: room) {
+                            if sharingManager.canEdit(room: room) {
                                 Button(role: .destructive) {
                                     viewModel.deleteNote(note)
                                 } label: {
@@ -45,7 +46,7 @@ struct NoteDetailView: View {
                 }
             }
 
-            if viewModel.canEdit(room: room) {
+            if sharingManager.canEdit(room: room) {
                 HStack {
                     TextField("Write your note here...", text: $viewModel.newNoteText)
                         .textFieldStyle(RoundedBorderTextFieldStyle())

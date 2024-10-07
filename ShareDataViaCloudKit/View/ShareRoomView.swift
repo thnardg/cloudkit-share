@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ShareRoomView: View {
     let room: Room
-    @StateObject private var viewModel = NoteDetailViewModel()
+    @StateObject private var viewModel = ShareRoomViewModel()
+
     @State private var showShareController = false
     
     

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CounterView: View {
-    let room: Room // instância da "sala" compartilhada
-    @StateObject private var viewModel = NoteDetailViewModel()
+    let room: Room // referência da "sala" compartilhada
+    @StateObject private var viewModel = CounterViewModel()
     @FetchRequest private var counters: FetchedResults<Counter> // fetch do dado compartilhado
 
     // inicializa a sala com as infos que foram compartilhadas nela

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NewZoneViewModel: ObservableObject {
+class NewRoomViewModel: ObservableObject {
     private let stack = CoreDataStack.shared
 
     func addRoom() {

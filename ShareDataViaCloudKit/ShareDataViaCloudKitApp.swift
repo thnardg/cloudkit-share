@@ -13,7 +13,7 @@ struct SwiftUIShareData: App {
     let container = CoreDataStack.shared.persistentContainer
     var body: some Scene {
         WindowGroup {
-            NewZoneView()
+            NewRoomView()
                 .environment(\.managedObjectContext, container.viewContext)
         }
     }
