@@ -6,47 +6,52 @@
 //
 
 import SwiftUI
+import CoreData
+
 
 struct CounterView: View {
-    let room: Room // referência da "sala" compartilhada
-    @StateObject private var viewModel = CounterViewModel()
-    @FetchRequest private var counters: FetchedResults<Counter> // fetch do dado compartilhado
+    let room: Room
 
-    // inicializa a sala com as infos que foram compartilhadas nela
+    @AppStorage("userUUID") private var userUUID: String = ""
+    @StateObject private var viewModel = ThoughtViewModel()
+    @FetchRequest private var users: FetchedResults<User>
+
     init(room: Room) {
         self.room = room
         
-        _counters = FetchRequest(entity: Counter.entity(),
-                                 sortDescriptors: [],
-                                 predicate: NSPredicate(format: "%K = %@", #keyPath(Counter.room), room),
-                                 animation: .default)
+        _users = FetchRequest(entity: User.entity(),
+                              sortDescriptors: [],
+                              predicate: NSPredicate(format: "%K = %@", #keyPath(User.room), room),
+                              animation: .default)
     }
 
     var body: some View {
         VStack {
-            if let counter = counters.first { //checa se existe um contador
-                HStack {
-                    VStack {
-                        Text("User 1: \(counter.userOneCount)")
-                            .font(.headline)
-                        Text("User 2: \(counter.userTwoCount)")
-                            .font(.headline)
-                    }.padding()
-
-                    Button(action: {
-                        viewModel.incrementCounter(counter, for: room)
-                    }) {
-                        Text("Counted")
-                            .padding(5)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(5)
-                    }
+            Button("Pensar no parceiro") {
+                if let currentUser = users.first(where: { $0.id == userUUID }) {
+                    // Registra o pensamento do usuário atual sobre o parceiro
+                    viewModel.addOrUpdateThought(for: currentUser, hasThoughtOnPartner: true)
                 }
             }
-        }.onAppear {
-            if counters.isEmpty {
-                viewModel.createCounter(for: room)
+            .buttonStyle(BorderedButtonStyle())
+            .padding()
+
+            // Exibe o pensamento mais recente do parceiro sobre o usuário atual
+            if let latestPartnerThought = viewModel.latestPartnerThought {
+                let partnerName = latestPartnerThought.user?.userName ?? "Parceiro"
+                let currentTime = DateFormatter.localizedString(from: latestPartnerThought.timestamp ?? Date(), dateStyle: .none, timeStyle: .medium)
+                Text("\(partnerName) pensou em você às \(currentTime)")
+                    .padding()
+            } else {
+                Text("Nenhum pensamento registrado do parceiro.")
+                    .padding()
+            }
+        }
+        .padding()
+        .onAppear {
+            // Atualiza o pensamento mais recente do parceiro quando a view aparece
+            if let currentUser = users.first(where: { $0.id == userUUID }) {
+                viewModel.fetchLatestPartnerThought(for: currentUser, in: room)
             }
         }
     }

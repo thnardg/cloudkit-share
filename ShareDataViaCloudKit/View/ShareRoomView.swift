@@ -31,8 +31,8 @@ struct ShareRoomView: View {
             }
             
             if countParticipants() {
-                NavigationLink(destination: NoteDetailView(room: room)) {
-                    Text("Go to Notes")
+                NavigationLink(destination: NewUserView(room: room)) {
+                    Text("Go to user creation")
                 }.buttonStyle(BorderedButtonStyle())
                 .padding()
             }

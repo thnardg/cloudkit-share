@@ -24,7 +24,7 @@ struct NoteDetailView: View {
 
     var body: some View {
         VStack {
-                CounterView(room: room)
+            CounterView(room: room)
             List {
                 ForEach(notes) { note in
                     Text(note.text ?? "")

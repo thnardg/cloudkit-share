@@ -6,23 +6,30 @@
 //
 
 import Foundation
-import SwiftUI
-import CloudKit
+import CoreData
 
-class CounterViewModel: ObservableObject {
+class ThoughtViewModel: ObservableObject {
     private let stack = CoreDataStack.shared
+    @Published var latestPartnerThought: Counter?
 
-    func incrementCounter(_ counter: Counter, for room: Room) {
-        if stack.isOwner(object: room) {
-            counter.userOneCount += 1
-        } else {
-            counter.userTwoCount += 1
+    // Função para buscar o pensamento mais recente do parceiro na mesma sala
+    func fetchLatestPartnerThought(for user: User, in room: Room) {
+        let fetchRequest: NSFetchRequest<Counter> = Counter.fetchRequest()
+        // Filtrar pensamentos de outros usuários na mesma sala
+        fetchRequest.predicate = NSPredicate(format: "user != %@ AND user.room == %@ AND hasThoughtOnPartner == true", user, room)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
+        fetchRequest.fetchLimit = 1
+
+        if let fetchedThought = try? stack.context.fetch(fetchRequest).first {
+            DispatchQueue.main.async {
+                self.latestPartnerThought = fetchedThought
+            }
         }
-        self.stack.incrementCounter(counter)
     }
 
-
-        func createCounter(for room: Room) {
-            stack.addCounter(to: room)
-        }
+    // Função para adicionar ou atualizar seu próprio pensamento
+    func addOrUpdateThought(for user: User, hasThoughtOnPartner: Bool) {
+        stack.addOrUpdateThought(for: user, hasThoughtOnPartner: hasThoughtOnPartner)
+        fetchLatestPartnerThought(for: user, in: user.room!)  // Recarrega o pensamento mais recente do parceiro na mesma sala
+    }
 }
