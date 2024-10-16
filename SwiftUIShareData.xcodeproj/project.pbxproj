@@ -28,7 +28,7 @@
 		2F879EA52CB850AF00B20394 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F879EA42CB850AF00B20394 /* NewUserView.swift */; };
 		2FAA907B2CB027B900F74C70 /* NewRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907A2CB027B900F74C70 /* NewRoomViewModel.swift */; };
 		2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */; };
-		2FE79F2F2CB3B38B000F812D /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE79F2E2CB3B38B000F812D /* CounterView.swift */; };
+		2FE79F2F2CB3B38B000F812D /* ThinkingOfYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,7 +56,7 @@
 		2F879EA42CB850AF00B20394 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		2FAA907A2CB027B900F74C70 /* NewRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoomViewModel.swift; sourceTree = "<group>"; };
 		2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
-		2FE79F2E2CB3B38B000F812D /* CounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterView.swift; sourceTree = "<group>"; };
+		2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingOfYouView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,7 @@
 				2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */,
 				2F879EA42CB850AF00B20394 /* NewUserView.swift */,
 				2F4A95982CB388250068FEA5 /* ShareRoomView.swift */,
-				2FE79F2E2CB3B38B000F812D /* CounterView.swift */,
+				2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -241,7 +241,7 @@
 				2F879EA52CB850AF00B20394 /* NewUserView.swift in Sources */,
 				2F4A95A02CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift in Sources */,
 				2F4A95952CB370920068FEA5 /* Model.xcdatamodeld in Sources */,
-				2FE79F2F2CB3B38B000F812D /* CounterView.swift in Sources */,
+				2FE79F2F2CB3B38B000F812D /* ThinkingOfYouView.swift in Sources */,
 				2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */,
 				2F6E95AD2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift in Sources */,
 				2F3B40762CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift in Sources */,

@@ -47,7 +47,7 @@ extension CoreDataStack {
         return persistentContainer.canDeleteRecord(forManagedObjectWith: object.objectID)
     }
 
-    // Verifica se o usuário atual é o dono do compartilhamento
+    // Verifica se o usuário atual é o dono do sharing
     func isOwner(object: NSManagedObject) -> Bool {
         guard isShared(object: object) else { return false }
         guard let share = try? persistentContainer.fetchShares(matching: [object.objectID])[object.objectID] else {
@@ -60,7 +60,7 @@ extension CoreDataStack {
         return false
     }
 
-    // Obtém o CKShare associado à sala
+    // CKShare associado à sala
     func getShare(_ room: Room) -> CKShare? {
         guard isShared(object: room) else { return nil }
         guard let share = try? persistentContainer.fetchShares(matching: [room.objectID])[room.objectID] else {

@@ -1,5 +1,5 @@
 //
-//  CounterView.swift
+//  ThinkingOfYouView.swift
 //  SwiftUIShareData
 //
 //  Created by Thayna Rodrigues on 07/10/24.
@@ -8,11 +8,10 @@
 import SwiftUI
 import CoreData
 
-
-struct CounterView: View {
+struct ThinkingOfYouView: View {
     let room: Room
 
-    @AppStorage("userUUID") private var userUUID: String = ""
+    @AppStorage("userUUID") private var userUUID: String = "" //uuid local
     @StateObject private var viewModel = ThoughtViewModel()
     @FetchRequest private var users: FetchedResults<User>
 
@@ -29,14 +28,13 @@ struct CounterView: View {
         VStack {
             Button("Pensar no parceiro") {
                 if let currentUser = users.first(where: { $0.id == userUUID }) {
-                    // Registra o pensamento do usuário atual sobre o parceiro
                     viewModel.addOrUpdateThought(for: currentUser, hasThoughtOnPartner: true)
                 }
             }
             .buttonStyle(BorderedButtonStyle())
             .padding()
 
-            // Exibe o pensamento mais recente do parceiro sobre o usuário atual
+            // mostra se o parceiro pensou em você
             if let latestPartnerThought = viewModel.latestPartnerThought {
                 let partnerName = latestPartnerThought.user?.userName ?? "Parceiro"
                 let currentTime = DateFormatter.localizedString(from: latestPartnerThought.timestamp ?? Date(), dateStyle: .none, timeStyle: .medium)
@@ -49,7 +47,7 @@ struct CounterView: View {
         }
         .padding()
         .onAppear {
-            // Atualiza o pensamento mais recente do parceiro quando a view aparece
+            // atualiza o pensamento mais recente do parceiro
             if let currentUser = users.first(where: { $0.id == userUUID }) {
                 viewModel.fetchLatestPartnerThought(for: currentUser, in: room)
             }
