@@ -1,5 +1,5 @@
 //
-//  CoreDataStack+Counter.swift
+//  CoreDataStack+Thought.swift
 //  SwiftUIShareData
 //
 //  Created by Thayna Rodrigues on 11/10/24.
@@ -12,7 +12,7 @@ import CoreData
 extension CoreDataStack {
     func addOrUpdateThought(for user: User, hasThoughtOnPartner: Bool) {
         // Verifica já existe um pensamento feito pelo usuário atual
-        let fetchRequest: NSFetchRequest<Counter> = Counter.fetchRequest()
+        let fetchRequest: NSFetchRequest<Thought> = Thought.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "user == %@ AND hasThoughtOnPartner == %@", user, NSNumber(value: hasThoughtOnPartner))
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
         fetchRequest.fetchLimit = 1
@@ -25,7 +25,7 @@ extension CoreDataStack {
             }
         } else {
             // Cria um novo pensamento
-            let newThought = Counter(context: context)
+            let newThought = Thought(context: context)
             context.perform {
                 newThought.user = user
                 newThought.timestamp = Date()

@@ -10,11 +10,11 @@ import CoreData
 
 class ThoughtViewModel: ObservableObject {
     private let stack = CoreDataStack.shared
-    @Published var latestPartnerThought: Counter?
+    @Published var latestPartnerThought: Thought?
 
     // Busca o pensamento mais recente do parceiro na mesma sala
     func fetchLatestPartnerThought(for user: User, in room: Room) {
-        let fetchRequest: NSFetchRequest<Counter> = Counter.fetchRequest()
+        let fetchRequest: NSFetchRequest<Thought> = Thought.fetchRequest()
         // filtra se o usuário não é o usuário atual, se está na mesma sala, e se pensou no parceiro alguma vez
         fetchRequest.predicate = NSPredicate(format: "user != %@ AND user.room == %@ AND hasThoughtOnPartner == true", user, room)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
