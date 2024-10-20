@@ -3,61 +3,31 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2F2EDFD42CB419D300DF77E8 /* CounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F2EDFD32CB419D300DF77E8 /* CounterViewModel.swift */; };
-		2F3B40762CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B40752CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift */; };
-		2F3B40782CAE329B00ECB3B4 /* NewRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B40772CAE329B00ECB3B4 /* NewRoomView.swift */; };
 		2F3B407A2CAE329C00ECB3B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F3B40792CAE329C00ECB3B4 /* Assets.xcassets */; };
 		2F3B407D2CAE329C00ECB3B4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2F3B407C2CAE329C00ECB3B4 /* Preview Assets.xcassets */; };
-		2F3B40862CAE33D000ECB3B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B40852CAE33D000ECB3B4 /* AppDelegate.swift */; };
-		2F3B40882CAE341100ECB3B4 /* NoteDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */; };
-		2F3B408A2CAE342C00ECB3B4 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B40892CAE342C00ECB3B4 /* CoreDataStack.swift */; };
-		2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */; };
 		2F3B40922CAE3EBF00ECB3B4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F3B40912CAE3EBF00ECB3B4 /* CloudKit.framework */; };
-		2F4A95952CB370920068FEA5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A95932CB370920068FEA5 /* Model.xcdatamodeld */; };
-		2F4A95992CB388250068FEA5 /* ShareRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A95982CB388250068FEA5 /* ShareRoomView.swift */; };
-		2F4A959B2CB388460068FEA5 /* ShareRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */; };
-		2F4A95A02CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4A959F2CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift */; };
-		2F6E95A92CB99D5C005CDDE2 /* CoreDataStack+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E95A82CB99D5C005CDDE2 /* CoreDataStack+User.swift */; };
-		2F6E95AB2CB99E38005CDDE2 /* CoreDataStack+Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E95AA2CB99E38005CDDE2 /* CoreDataStack+Room.swift */; };
-		2F6E95AD2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E95AC2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift */; };
-		2F6E95AF2CB9A00C005CDDE2 /* CoreDataStack+Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6E95AE2CB9A00C005CDDE2 /* CoreDataStack+Notes.swift */; };
-		2F879EA52CB850AF00B20394 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F879EA42CB850AF00B20394 /* NewUserView.swift */; };
-		2FAA907B2CB027B900F74C70 /* NewRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907A2CB027B900F74C70 /* NewRoomViewModel.swift */; };
-		2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */; };
-		2FE79F2F2CB3B38B000F812D /* ThinkingOfYouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2F2EDFD32CB419D300DF77E8 /* CounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CounterViewModel.swift; sourceTree = "<group>"; };
 		2F3B40722CAE329B00ECB3B4 /* SwiftUIShareData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUIShareData.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F3B40752CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataViaCloudKitApp.swift; sourceTree = "<group>"; };
-		2F3B40772CAE329B00ECB3B4 /* NewRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoomView.swift; sourceTree = "<group>"; };
 		2F3B40792CAE329C00ECB3B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2F3B407C2CAE329C00ECB3B4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2F3B40832CAE332100ECB3B4 /* ShareDataViaCloudKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareDataViaCloudKit.entitlements; sourceTree = "<group>"; };
 		2F3B40842CAE334F00ECB3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		2F3B40852CAE33D000ECB3B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
-		2F3B40892CAE342C00ECB3B4 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		2F3B40912CAE3EBF00ECB3B4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		2F4A95942CB370920068FEA5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		2F4A95982CB388250068FEA5 /* ShareRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRoomView.swift; sourceTree = "<group>"; };
-		2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRoomViewModel.swift; sourceTree = "<group>"; };
-		2F4A959F2CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Sharing.swift"; sourceTree = "<group>"; };
-		2F6E95A82CB99D5C005CDDE2 /* CoreDataStack+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+User.swift"; sourceTree = "<group>"; };
-		2F6E95AA2CB99E38005CDDE2 /* CoreDataStack+Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Room.swift"; sourceTree = "<group>"; };
-		2F6E95AC2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+ThinkingOfYou.swift"; sourceTree = "<group>"; };
-		2F6E95AE2CB9A00C005CDDE2 /* CoreDataStack+Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Notes.swift"; sourceTree = "<group>"; };
-		2F879EA42CB850AF00B20394 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
-		2FAA907A2CB027B900F74C70 /* NewRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRoomViewModel.swift; sourceTree = "<group>"; };
-		2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
-		2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingOfYouView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2F011EB62CC5A4FA00772A20 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		2F011EB72CC5A50200772A20 /* ViewModel */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ViewModel; sourceTree = "<group>"; };
+		2F011EB82CC5A51100772A20 /* DataManager */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataManager; sourceTree = "<group>"; };
+		2F011EB92CC5A52D00772A20 /* Utils */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utils; sourceTree = "<group>"; };
+		2F011EBA2CC5A53600772A20 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		2F3B406F2CAE329B00ECB3B4 /* Frameworks */ = {
@@ -93,11 +63,11 @@
 			children = (
 				2F3B40842CAE334F00ECB3B4 /* Info.plist */,
 				2F3B40832CAE332100ECB3B4 /* ShareDataViaCloudKit.entitlements */,
-				2F3B40752CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift */,
-				2F3B40852CAE33D000ECB3B4 /* AppDelegate.swift */,
-				2F4A959C2CB38C0F0068FEA5 /* View */,
-				2F4A959D2CB38C170068FEA5 /* ViewModel */,
-				2F4A959E2CB38C290068FEA5 /* Data Manager */,
+				2F011EBA2CC5A53600772A20 /* App */,
+				2F011EB62CC5A4FA00772A20 /* Views */,
+				2F011EB72CC5A50200772A20 /* ViewModel */,
+				2F011EB82CC5A51100772A20 /* DataManager */,
+				2F011EB92CC5A52D00772A20 /* Utils */,
 				2F3B40792CAE329C00ECB3B4 /* Assets.xcassets */,
 				2F3B407B2CAE329C00ECB3B4 /* Preview Content */,
 			);
@@ -120,44 +90,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2F4A959C2CB38C0F0068FEA5 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				2F3B40772CAE329B00ECB3B4 /* NewRoomView.swift */,
-				2F3B40872CAE341100ECB3B4 /* NoteDetailView.swift */,
-				2F879EA42CB850AF00B20394 /* NewUserView.swift */,
-				2F4A95982CB388250068FEA5 /* ShareRoomView.swift */,
-				2FE79F2E2CB3B38B000F812D /* ThinkingOfYouView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		2F4A959D2CB38C170068FEA5 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				2FAA907A2CB027B900F74C70 /* NewRoomViewModel.swift */,
-				2F2EDFD32CB419D300DF77E8 /* CounterViewModel.swift */,
-				2FAA907C2CB027E500F74C70 /* NoteDetailViewModel.swift */,
-				2F4A959A2CB388460068FEA5 /* ShareRoomViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		2F4A959E2CB38C290068FEA5 /* Data Manager */ = {
-			isa = PBXGroup;
-			children = (
-				2F3B40892CAE342C00ECB3B4 /* CoreDataStack.swift */,
-				2F6E95AC2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift */,
-				2F4A959F2CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift */,
-				2F6E95AE2CB9A00C005CDDE2 /* CoreDataStack+Notes.swift */,
-				2F6E95A82CB99D5C005CDDE2 /* CoreDataStack+User.swift */,
-				2F6E95AA2CB99E38005CDDE2 /* CoreDataStack+Room.swift */,
-				2F3B408B2CAE343F00ECB3B4 /* ShareController.swift */,
-				2F4A95932CB370920068FEA5 /* Model.xcdatamodeld */,
-			);
-			path = "Data Manager";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,6 +104,13 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2F011EB62CC5A4FA00772A20 /* Views */,
+				2F011EB72CC5A50200772A20 /* ViewModel */,
+				2F011EB82CC5A51100772A20 /* DataManager */,
+				2F011EB92CC5A52D00772A20 /* Utils */,
+				2F011EBA2CC5A53600772A20 /* App */,
 			);
 			name = SwiftUIShareData;
 			productName = ShareDataViaCloudKit;
@@ -228,25 +167,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F3B408A2CAE342C00ECB3B4 /* CoreDataStack.swift in Sources */,
-				2F4A95992CB388250068FEA5 /* ShareRoomView.swift in Sources */,
-				2F3B40862CAE33D000ECB3B4 /* AppDelegate.swift in Sources */,
-				2F2EDFD42CB419D300DF77E8 /* CounterViewModel.swift in Sources */,
-				2F3B40782CAE329B00ECB3B4 /* NewRoomView.swift in Sources */,
-				2FAA907B2CB027B900F74C70 /* NewRoomViewModel.swift in Sources */,
-				2F6E95AF2CB9A00C005CDDE2 /* CoreDataStack+Notes.swift in Sources */,
-				2F6E95AB2CB99E38005CDDE2 /* CoreDataStack+Room.swift in Sources */,
-				2F6E95A92CB99D5C005CDDE2 /* CoreDataStack+User.swift in Sources */,
-				2FAA907D2CB027E500F74C70 /* NoteDetailViewModel.swift in Sources */,
-				2F879EA52CB850AF00B20394 /* NewUserView.swift in Sources */,
-				2F4A95A02CB38CEB0068FEA5 /* CoreDataStack+Sharing.swift in Sources */,
-				2F4A95952CB370920068FEA5 /* Model.xcdatamodeld in Sources */,
-				2FE79F2F2CB3B38B000F812D /* ThinkingOfYouView.swift in Sources */,
-				2F3B408C2CAE343F00ECB3B4 /* ShareController.swift in Sources */,
-				2F6E95AD2CB99FB3005CDDE2 /* CoreDataStack+ThinkingOfYou.swift in Sources */,
-				2F3B40762CAE329B00ECB3B4 /* ShareDataViaCloudKitApp.swift in Sources */,
-				2F3B40882CAE341100ECB3B4 /* NoteDetailView.swift in Sources */,
-				2F4A959B2CB388460068FEA5 /* ShareRoomViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,19 +378,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		2F4A95932CB370920068FEA5 /* Model.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				2F4A95942CB370920068FEA5 /* Model.xcdatamodel */,
-			);
-			currentVersion = 2F4A95942CB370920068FEA5 /* Model.xcdatamodel */;
-			path = Model.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 2F3B406A2CAE329B00ECB3B4 /* Project object */;
 }

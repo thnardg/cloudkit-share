@@ -68,8 +68,8 @@ struct NewUserView: View {
             .padding()
 
             if users.count >= 2 {
-                NavigationLink(destination: NoteDetailView(room: room)) {
-                    Text("Go to Notes")
+                NavigationLink(destination: MainTabView(room: room)) {
+                    Text("Go to Home")
                         .buttonStyle(BorderedButtonStyle())
                 }
                 .padding()

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Moodtracker" representedClassName="Moodtracker" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="mood" optional="YES" attributeType="String"/>
+        <attribute name="moodDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="mood" inverseEntity="User"/>
+    </entity>
     <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
@@ -22,6 +28,7 @@
         <attribute name="isOwner" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="userBirthday" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="userName" optional="YES" attributeType="String"/>
+        <relationship name="mood" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Moodtracker" inverseName="user" inverseEntity="Moodtracker"/>
         <relationship name="room" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Room" inverseName="users" inverseEntity="Room"/>
         <relationship name="thought" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Thought" inverseName="user" inverseEntity="Thought"/>
     </entity>
@@ -30,5 +37,6 @@
         <memberEntity name="Note"/>
         <memberEntity name="Room"/>
         <memberEntity name="User"/>
+        <memberEntity name="Moodtracker"/>
     </configuration>
 </model>
