@@ -15,6 +15,8 @@ struct HomeView: View {
     var body: some View {
         VStack {
             ThinkingOfYouView(room: room)
+            NavigationLink("Update your mood", destination: MoodtrackerView(room: room))
+            
             Text("Welcome to the Home View!")
             
             Text("\(viewModel.text)")
