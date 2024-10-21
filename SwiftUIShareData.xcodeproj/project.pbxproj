@@ -27,6 +27,7 @@
 		2F011EB82CC5A51100772A20 /* DataManager */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataManager; sourceTree = "<group>"; };
 		2F011EB92CC5A52D00772A20 /* Utils */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utils; sourceTree = "<group>"; };
 		2F011EBA2CC5A53600772A20 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = App; sourceTree = "<group>"; };
+		2F78F7C82CC6C2B0005266A6 /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +65,7 @@
 				2F3B40842CAE334F00ECB3B4 /* Info.plist */,
 				2F3B40832CAE332100ECB3B4 /* ShareDataViaCloudKit.entitlements */,
 				2F011EBA2CC5A53600772A20 /* App */,
+				2F78F7C82CC6C2B0005266A6 /* Model */,
 				2F011EB62CC5A4FA00772A20 /* Views */,
 				2F011EB72CC5A50200772A20 /* ViewModel */,
 				2F011EB82CC5A51100772A20 /* DataManager */,
@@ -111,6 +113,7 @@
 				2F011EB82CC5A51100772A20 /* DataManager */,
 				2F011EB92CC5A52D00772A20 /* Utils */,
 				2F011EBA2CC5A53600772A20 /* App */,
+				2F78F7C82CC6C2B0005266A6 /* Model */,
 			);
 			name = SwiftUIShareData;
 			productName = ShareDataViaCloudKit;
