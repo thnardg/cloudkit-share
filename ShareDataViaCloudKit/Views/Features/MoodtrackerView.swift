@@ -41,7 +41,6 @@ struct MoodtrackerView: View {
         VStack {
             VStack {
                 if let currentUser = users.first(where: { $0.id == userUUID }) {
-                    // Display your latest mood
                     if let myMood = viewmodel.latestUserMood {
                         Text("Your latest mood: \(myMood.mood ?? "Unknown")")
                             .font(.headline)
@@ -50,7 +49,6 @@ struct MoodtrackerView: View {
                             .font(.subheadline)
                     }
 
-                    // Display latest partner's mood
                     if let partnerMood = viewmodel.latestPartnerMood {
                         let partnerName = partnerMood.user?.userName ?? "Parceiro"
                         Text("\(partnerName)'s latest mood: \(partnerMood.mood ?? "Unknown")")
@@ -112,10 +110,8 @@ class MoodtrackerViewModel: ObservableObject {
     @Published var latestPartnerMood: Moodtracker?
     @Published var latestUserMood: Moodtracker?
 
-    // Fetch the most recent mood of the partner in the same room
     func fetchLatestPartnerMood(for user: User, in room: Room) {
         let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        // Filter to exclude the current user, ensure they are in the same room, and get the partner's mood
         fetchRequest.predicate = NSPredicate(format: "user != %@ AND user.room == %@", user, room)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
         fetchRequest.fetchLimit = 1
@@ -127,10 +123,8 @@ class MoodtrackerViewModel: ObservableObject {
         }
     }
 
-    // Fetch the most recent mood for the current user
     func fetchLatestUserMood(for user: User) {
         let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        // Filter to only include moods for the current user
         fetchRequest.predicate = NSPredicate(format: "user == %@", user)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
         fetchRequest.fetchLimit = 1
@@ -142,10 +136,9 @@ class MoodtrackerViewModel: ObservableObject {
         }
     }
 
-    // Add or update a new mood for the current user
     func addOrUpdateMood(for user: User, selectedMood: String) {
         stack.addOrUpdateMood(for: user, selectedMood: selectedMood)
-        fetchLatestUserMood(for: user)  // Fetch the latest mood for the current user
-        fetchLatestPartnerMood(for: user, in: user.room!)  // Fetch the latest partner mood in the same room
+        fetchLatestUserMood(for: user)
+        fetchLatestPartnerMood(for: user, in: user.room!)
     }
 }
