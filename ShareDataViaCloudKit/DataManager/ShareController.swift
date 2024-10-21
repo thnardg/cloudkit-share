@@ -21,7 +21,7 @@ struct CloudSharingView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UICloudSharingController {
         share[CKShare.SystemFieldKey.title] = room.name
-        share.publicPermission = .readWrite
+        share.publicPermission = .none
         let controller = UICloudSharingController(share: share, container: container)
         controller.modalPresentationStyle = .formSheet
         controller.delegate = context.coordinator

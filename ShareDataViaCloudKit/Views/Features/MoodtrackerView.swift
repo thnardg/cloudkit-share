@@ -10,10 +10,10 @@ import CoreData
 
 struct MoodtrackerView: View {
     let room: Room
-
-    @AppStorage("userUUID") private var userUUID: String = "" //uuid local
+    @AppStorage("userUUID") private var userUUID: String = "" // uuid local
     
     @StateObject private var viewmodel = MoodtrackerViewModel()
+    
     @State private var selectedMoodIndex: Int? = nil
     @State private var buttonSelectionCount: Int = 0
     @State private var buttonIsSelected: Bool = false
@@ -26,21 +26,9 @@ struct MoodtrackerView: View {
         GridItem(.flexible(minimum: 10, maximum: 100))
     ]
     
-    @FetchRequest private var users: FetchedResults<User>
-    
-    init(room: Room) {
-        self.room = room
-        
-        _users = FetchRequest(entity: User.entity(),
-                              sortDescriptors: [],
-                              predicate: NSPredicate(format: "%K = %@", #keyPath(User.room), room),
-                              animation: .default)
-    }
-    
     var body: some View {
         VStack {
             VStack {
-                if let currentUser = users.first(where: { $0.id == userUUID }) {
                     if let myMood = viewmodel.latestUserMood {
                         Text("Your latest mood: \(myMood.mood ?? "Unknown")")
                             .font(.headline)
@@ -57,9 +45,8 @@ struct MoodtrackerView: View {
                         Text("No mood recorded for partner yet.")
                             .font(.subheadline)
                     }
-                }
+                
             }
-
                 
             LazyVGrid(columns: self.columns) {
                 ForEach(Array(moods.enumerated()), id: \.element) { index, mood in
@@ -72,8 +59,8 @@ struct MoodtrackerView: View {
                         } else {
                             selectedMoodIndex = index
                             print("Selected mood: \(mood)")
-                            if let currentUser = users.first(where: { $0.id == userUUID }) {
-                                viewmodel.addOrUpdateMood(for: currentUser, selectedMood: mood) 
+                            if let currentUser = viewmodel.users.first(where: { $0.id == userUUID }) {
+                                viewmodel.addOrUpdateMood(for: currentUser, selectedMood: mood)
                             }
                         }
                     }) {
@@ -95,50 +82,8 @@ struct MoodtrackerView: View {
             }
         }
         .padding()
-        .onAppear() {
-            if let currentUser = users.first(where: { $0.id == userUUID }) {
-                viewmodel.fetchLatestUserMood(for: currentUser)
-                viewmodel.fetchLatestPartnerMood(for: currentUser, in: room)
-            }
+        .onAppear {
+            viewmodel.fetchUsers(for: room, with: userUUID)
         }
-    }
-}
-
-
-class MoodtrackerViewModel: ObservableObject {
-    private let stack = CoreDataStack.shared
-    @Published var latestPartnerMood: Moodtracker?
-    @Published var latestUserMood: Moodtracker?
-
-    func fetchLatestPartnerMood(for user: User, in room: Room) {
-        let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "user != %@ AND user.room == %@", user, room)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
-        fetchRequest.fetchLimit = 1
-
-        if let fetchedMood = try? stack.context.fetch(fetchRequest).first {
-            DispatchQueue.main.async {
-                self.latestPartnerMood = fetchedMood
-            }
-        }
-    }
-
-    func fetchLatestUserMood(for user: User) {
-        let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "user == %@", user)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
-        fetchRequest.fetchLimit = 1
-
-        if let fetchedMood = try? stack.context.fetch(fetchRequest).first {
-            DispatchQueue.main.async {
-                self.latestUserMood = fetchedMood
-            }
-        }
-    }
-
-    func addOrUpdateMood(for user: User, selectedMood: String) {
-        stack.addOrUpdateMood(for: user, selectedMood: selectedMood)
-        fetchLatestUserMood(for: user)
-        fetchLatestPartnerMood(for: user, in: user.room!)
     }
 }
