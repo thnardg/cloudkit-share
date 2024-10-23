@@ -16,28 +16,41 @@ struct ShareRoomView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             Button(action: {
                 Task {
                     await viewModel.createShare(for: room)
                     showShareController = true
                 }
             }) {
-                Text("Share This Room")
-            }.buttonStyle(BorderedProminentButtonStyle())
-            .padding()
-            
+                HStack {
+                    Image(systemName: "arrow.up.heart.fill")
+                    Text("Invite Partner")
+                }
+                .padding()
+                .foregroundColor(.white).bold()
+                .background(Color.purple)
+                .cornerRadius(100)
+                .padding(.horizontal)
+            }
+            .padding(.bottom, 30)
             if viewModel.sharing {
                 ProgressView("Sharing...")
             }
-            
-            if countParticipants() {
-                NavigationLink(destination: NewUserView(room: room)) {
-                    Text("Go to user creation")
-                }.buttonStyle(BorderedButtonStyle())
-                .padding()
-            }
         }
-        .navigationTitle("Share Room")
+            VStack {
+                if countParticipants() {
+                    NavigationLink(destination: NewUserView(room: room)) {
+                        Text("Create users")
+                        Image(systemName: "arrow.right")
+                    }.padding()
+                        .foregroundColor(.white).bold()
+                        .background(Color.purple)
+                        .cornerRadius(100)
+                        .padding(.horizontal)
+                }
+                Spacer()
+            }
         .sheet(isPresented: $showShareController) {
             let share = CoreDataStack.shared.getShare(room)!
             CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)

@@ -8,67 +8,80 @@
 import SwiftUI
 import CoreData
 
-// Essa View lida com as "Salas" compartilhadas
 struct NewRoomView: View {
     @StateObject private var viewModel = NewRoomViewModel()
     
     @FetchRequest(entity: Room.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Room.timestamp, ascending: false)], animation: .default)
-    
     private var rooms: FetchedResults<Room>
     
     @State private var id = UUID()
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(rooms) { room in
-                    NavigationLink {
-                        ShareRoomView(room: room)
-                    } label: {
-                        HStack {
-                            Text(room.name ?? "")
-                            if viewModel.isShared(room) {
-                                if viewModel.isOwner(room) {
-                                    Image(systemName: "person.2.fill")
-                                        .foregroundColor(.blue)
-                                } else {
-                                    Image(systemName: "person.fill")
-                                        .foregroundColor(.green)
+            ZStack {
+                List {
+                    ForEach(rooms) { room in
+                        NavigationLink {
+                            ShareRoomView(room: room)
+                        } label: {
+                            HStack {
+                                if viewModel.isShared(room) {
+                                    if viewModel.isOwner(room) {
+                                        Image(systemName: "arrow.up.heart.fill")
+                                            .foregroundColor(.pink)
+                                    } else {
+                                        Image(systemName: "arrow.down.heart.fill")
+                                            .foregroundColor(.pink)
+                                    }
                                 }
+                                if !viewModel.canEdit(room) {
+                                    Image(systemName: "heart.slash.fill")
+                                        .foregroundColor(.red)
+                                }
+                                Text(room.name ?? "")
                             }
-                            if !viewModel.canEdit(room) {
-                                Image(systemName: "pencil.slash")
-                                    .foregroundColor(.red)
-                            }
+                            .id(id)
                         }
-                        .id(id)
-                    }
-                    .swipeActions {
-                        if viewModel.canEdit(room) {
-                            Button(role: .destructive) {
-                                withAnimation {
-                                    viewModel.deleteRoom(room)
+                        .swipeActions {
+                            if viewModel.canEdit(room) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        viewModel.deleteRoom(room)
+                                    }
+                                } label: {
+                                    Label("Del", systemImage: "trash")
                                 }
-                            } label: {
-                                Label("Del", systemImage: "trash")
                             }
                         }
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
+                .navigationTitle("Widgetogether")
+                .onAppear { id = UUID() }
+
+                VStack {
+                    Spacer()
+                    Button(action: {
                         withAnimation {
                             viewModel.addRoom()
                         }
-                    } label: {
-                        Image(systemName: "plus")
+                    }) {
+                        HStack {
+                            Image(systemName: "plus")
+                            Text("Create New Room")
+                        }
+                        .padding()
+                        .foregroundColor(.white).bold()
+                        .background(Color.purple)
+                        .cornerRadius(100)
+                        .padding(.horizontal)
                     }
+                    .padding(.bottom, 30)
                 }
             }
-            .navigationTitle("ShareDemo")
-            .onAppear { id = UUID() }
         }
     }
+}
+
+#Preview {
+    NewRoomView()
 }

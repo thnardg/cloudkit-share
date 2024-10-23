@@ -42,5 +42,26 @@ extension CoreDataStack {
             print("Failed to fetch mood for today: \(error)")
         }
     }
-}
+    
+    func clearMoodForToday(for user: User) {
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
 
+        let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "user == %@ AND moodDate >= %@", user, startOfToday as NSDate)
+
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let existingMood = results.first {
+                context.perform {
+                    self.context.delete(existingMood)
+                    self.save()
+                }
+            } else {
+                print("No mood found for today.")
+            }
+        } catch {
+            print("Failed to fetch mood for today: \(error)")
+        }
+    }
+}
