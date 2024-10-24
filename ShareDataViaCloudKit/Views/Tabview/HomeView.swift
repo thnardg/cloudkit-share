@@ -11,11 +11,16 @@ struct HomeView: View {
     var room: Room
     @ObservedObject var viewModel = HomeViewModel()
     @State var info: Bool = false
+    @State private var isMoodtrackerSheetPresented = false
     
     var body: some View {
         VStack {
             ThinkingOfYouView(room: room)
-           NavigationLink("Update your mood", destination: MoodtrackerView(room: room))
+            CoupleMoodtrackerView(room: room)
+            
+            Button("Update your mood") {
+                isMoodtrackerSheetPresented.toggle()
+            }
             
             Text("Welcome to the Home View!")
             
@@ -35,6 +40,9 @@ struct HomeView: View {
                 Button(action: {}) { Image(systemName: "person") }
             }
             
+        }
+        .sheet(isPresented: $isMoodtrackerSheetPresented) {
+            MoodtrackerView(room: room)
         }
     }
 }
