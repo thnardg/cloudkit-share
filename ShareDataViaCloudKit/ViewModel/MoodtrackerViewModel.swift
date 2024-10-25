@@ -64,6 +64,9 @@ enum Mood: String, CaseIterable {
     case angry = "Angry"
     case calm = "Calm"
     case anxious = "Anxious"
+    case tired = "Tired"
+    case energetic = "Energetic"
+    case peaceful = "Peaceful"
     
     var imageName: String {
         switch self {
@@ -79,6 +82,12 @@ enum Mood: String, CaseIterable {
             return "cloud.circle.fill"
         case .anxious:
             return "cloud.sleet.circle.fill"
+        case .tired:
+            return "cloud.moon.circle.fill"
+        case .energetic:
+            return "sun.max.circle.fill"
+        case .peaceful:
+            return "cloud.sun.rain.circle.fill"
         }
     }
 }

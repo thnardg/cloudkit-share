@@ -16,7 +16,7 @@ struct MoodtrackerView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var selectedMoodIndex: Int? = nil
-        
+    
     var columns: [GridItem] = [
         GridItem(.flexible(minimum: 10, maximum: 100)),
         GridItem(.flexible(minimum: 10, maximum: 100)),
@@ -25,6 +25,8 @@ struct MoodtrackerView: View {
     
     var body: some View {
         VStack {
+            Text("How do you feel today?").font(.title2.bold()).padding()
+            Spacer()
             LazyVGrid(columns: self.columns) {
                 ForEach(Array(Mood.allCases.enumerated()), id: \.element) { index, mood in
                     Button(action: {
@@ -38,7 +40,7 @@ struct MoodtrackerView: View {
                                 .scaleEffect(selectedMoodIndex == index ? 1.1 : 1.0)
                                 .animation(.spring(response: 0.8, dampingFraction: 0.6, blendDuration: 0), value: selectedMoodIndex)
                             Text(mood.rawValue)
-                                .foregroundColor(Color.blue)
+                                .foregroundStyle(Color.blue.opacity(selectedMoodIndex == index ? 0.5 : 0.2))
                                 .font(.caption)
                                 .multilineTextAlignment(.center)
                         }

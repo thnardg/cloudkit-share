@@ -19,33 +19,41 @@ struct HomeView: View {
             ScrollView {
                 HStack {
                     ThinkingOfYouHomeView(room: room)
-                    
+                    // TODO: -- Adicionar o countdown de dias juntos aqui
                     Spacer()
                 }
                 Spacer()
                 
+                // TODO: -- Adicionar a pergunta do dia aqui
+                // TODO: -- Adicionar o recado aqui
+
                 Button {
                     isMoodtrackerSheetPresented.toggle()
                     HapticsManager.medium.generate()
                 } label: {
                     CoupleMoodtrackerView(room: room)
                 }.buttonStyle(PlainButtonStyle())
+                
+                // TODO: -- Adicionar timezones aqui
+                // TODO: -- Adicionar outros countdowns aqui
 
                 Spacer()
             }.padding()
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {}) { Image(systemName: "gearshape") }
-            }
-            
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {}) { Image(systemName: "person") }
-            }
-            
-        }
         .sheet(isPresented: $isMoodtrackerSheetPresented) {
-            MoodtrackerView(room: room)
-        }
+            NavigationStack {
+                MoodtrackerView(room: room)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                isMoodtrackerSheetPresented = false
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                    }
+            }
+        }.presentationDragIndicator(.visible)
     }
 }
