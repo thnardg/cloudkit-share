@@ -10,12 +10,9 @@ import CoreData
 
 class MoodtrackerViewModel: ObservableObject {
     private let stack = CoreDataStack.shared
-    @Published var todaysUserMood: Moodtracker?
-    @Published var todaysPartnerMood: Moodtracker?
-    @Published var users: [User] = []
-    @Published var buttonStates: [MoodButtonState] = Array(repeating: .none, count: 6)
     
-    let moods = ["Happy", "Sad", "Excited", "Angry", "Calm", "Anxious"]
+    @Published var users: [User] = []
+    @Published var buttonStates: [MoodButtonState] = Array(repeating: .none, count: Mood.allCases.count)
 
     func fetchUsers(for room: Room, with userUUID: String) {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
@@ -25,79 +22,63 @@ class MoodtrackerViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.users = fetchedUsers
             }
-            if let currentUser = fetchedUsers.first(where: { $0.id == userUUID }) {
-                fetchTodaysUserMood(for: currentUser)
-                fetchTodaysPartnerMood(for: currentUser, in: room)
-            }
         }
     }
     
-    func fetchTodaysUserMood(for user: User) {
-        let calendar = Calendar.current
-        let startOfToday = calendar.startOfDay(for: Date())
-        
-        let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "user == %@ AND moodDate >= %@", user, startOfToday as NSDate)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
-        fetchRequest.fetchLimit = 1
-        
-        if let fetchedMood = try? stack.context.fetch(fetchRequest).first {
-            DispatchQueue.main.async {
-                self.todaysUserMood = fetchedMood
-            }
+    func addOrUpdateMood(for user: User, selectedMood: Mood) {
+            stack.addOrUpdateMood(for: user, selectedMood: selectedMood.rawValue)
         }
-    }
-    
-    func fetchTodaysPartnerMood(for user: User, in room: Room) {
-        let calendar = Calendar.current
-        let startOfToday = calendar.startOfDay(for: Date())
-        
-        let fetchRequest: NSFetchRequest<Moodtracker> = Moodtracker.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "user != %@ AND user.room == %@ AND moodDate >= %@", user, room, startOfToday as NSDate)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "moodDate", ascending: false)]
-        fetchRequest.fetchLimit = 1
-        
-        if let fetchedMood = try? stack.context.fetch(fetchRequest).first {
-            DispatchQueue.main.async {
-                self.todaysPartnerMood = fetchedMood
-            }
-        }
-    }
-    
-    func addOrUpdateMood(for user: User, selectedMood: String) {
-        stack.addOrUpdateMood(for: user, selectedMood: selectedMood)
-        fetchTodaysUserMood(for: user)
-        fetchTodaysPartnerMood(for: user, in: user.room!)
-    }
     
     func clearMoodForToday(for user: User) {
         stack.clearMoodForToday(for: user)
-        fetchTodaysUserMood(for: user)
-        fetchTodaysPartnerMood(for: user, in: user.room!)
     }
     
-    func updateButtonStates(selectedIndex: Int, userUUID: String) {
-        if buttonStates[selectedIndex] == .selected {
-            buttonStates = Array(repeating: .none, count: buttonStates.count)
-        } else {
-            buttonStates = Array(repeating: .unselected, count: buttonStates.count)
-            buttonStates[selectedIndex] = .selected
+    func updateButtonStates(selectedMood: Mood, userUUID: String) {
+        buttonStates = Array(repeating: .unselected, count: buttonStates.count)
+
+        var selectedIndex: Int?
+
+        if let index = Mood.allCases.firstIndex(of: selectedMood) {
+            selectedIndex = index
+            buttonStates[selectedIndex!] = .selected
         }
 
         if let currentUser = users.first(where: { $0.id == userUUID }) {
-            if buttonStates[selectedIndex] == .selected {
-                let selectedMood = moods[selectedIndex]
+            if let selectedIndex = selectedIndex, buttonStates[selectedIndex] == .selected {
                 addOrUpdateMood(for: currentUser, selectedMood: selectedMood)
-            } else {
-                clearMoodForToday(for: currentUser)
             }
         }
     }
 }
 
-
 enum MoodButtonState {
     case none
     case selected
     case unselected
+}
+
+enum Mood: String, CaseIterable {
+    case happy = "Happy"
+    case sad = "Sad"
+    case excited = "Excited"
+    case angry = "Angry"
+    case calm = "Calm"
+    case anxious = "Anxious"
+    
+    var imageName: String {
+        switch self {
+        case .happy:
+            return "cloud.sun.circle.fill"
+        case .sad:
+            return "cloud.drizzle.circle.fill"
+        case .excited:
+            return "cloud.snow.circle.fill"
+        case .angry:
+            return "cloud.moon.bolt.circle.fill"
+        case .calm:
+            return "cloud.circle.fill"
+        case .anxious:
+            return "cloud.sleet.circle.fill"
+        }
+    }
 }

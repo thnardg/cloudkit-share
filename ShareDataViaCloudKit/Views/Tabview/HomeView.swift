@@ -18,7 +18,7 @@ struct HomeView: View {
             Color.gray.opacity(0.2).ignoresSafeArea(.all)
             VStack {
                 HStack {
-                    ThinkingOfYouView(room: room)
+                    ThinkingOfYouHomeView(room: room)
                     
                     Spacer()
                 }
