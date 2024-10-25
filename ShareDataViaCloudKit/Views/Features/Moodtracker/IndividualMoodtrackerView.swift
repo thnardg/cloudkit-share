@@ -58,7 +58,7 @@ struct IndividualMoodtrackerView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 56)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.black)
                     .padding(4)
                 
                 Text(mood?.mood ?? "No Mood Yet")
