@@ -37,7 +37,7 @@ struct ThinkingOfYouView: View {
         VStack(alignment: .leading) {
             if let latestPartnerThought = partnersThoughts.first {
                 let partnerName = latestPartnerThought.user?.userName ?? "Parceiro"
-                Text("\(partnerName) is thinking about you!").font(.subheadline).bold()
+                Text("\(partnerName) is thinking about you!").font(.subheadline).bold().foregroundStyle(.black)
                 Text(latestPartnerThought.timestamp?.formattedForDisplay() ?? "Couldn't find the time").font(.caption2).italic().foregroundStyle(.gray)
             }
             Spacer()
