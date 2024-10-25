@@ -42,20 +42,11 @@ struct ThinkingOfYouView: View {
             }
             Spacer()
             
-            Button {
+            HomeWidgetButton(title: "Think of Them", action: {
                 if let currentUser = users.first(where: { $0.id == userUUID }) {
                     viewModel.addOrUpdateThought(for: currentUser, hasThoughtOnPartner: true)
                 }
-            } label: {
-                Text("Think of Them")
-                
-            }
-            .font(.system(size: 14))
-            .padding(.vertical, 5)
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white).bold()
-            .background(Color.black)
-            .cornerRadius(100)
+            })
         }.padding(16)
     }
 }
