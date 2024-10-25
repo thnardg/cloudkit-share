@@ -22,24 +22,23 @@ struct HomeView: View {
                         
                         HStack {
                             ThinkingOfYouHomeView(room: room)
-                            // TODO: -- Adicionar o countdown de dias juntos aqui
                             Spacer()
+                            // TODO: -- Adicionar o countdown de dias juntos aqui
                         }
-                        Spacer()
-                        
-                        // TODO: -- Adicionar a pergunta do dia aqui
-                        // TODO: -- Adicionar o recado aqui
+                        Spacer() // tirar esse spacer quando adicionar os outros blocos
+                        // TODO: -- Adicionar a pergunta do dia aqui com padding top 25
+                        // TODO: -- Adicionar o recado aqui com padding top 25
                         
                         Button {
                             isMoodtrackerSheetPresented.toggle()
                             HapticsManager.medium.generate()
                         } label: {
-                            CoupleMoodtrackerView(room: room)
+                            CoupleMoodtrackerView(room: room).padding(.top, 25)
                         }
                         .buttonStyle(PlainButtonStyle())
                         
-                        // TODO: -- Adicionar timezones aqui
-                        // TODO: -- Adicionar outros countdowns aqui
+                        // TODO: -- Adicionar timezones aqui com padding top 25
+                        // TODO: -- Adicionar outros countdowns aqui com padding top 25
                         
                         Spacer()
                     }
