@@ -12,11 +12,14 @@ struct CoupleMoodtrackerView: View {
     let room: Room
 
     var body: some View {
-        HomeContainer(title: "Moodtracker", size: .medium) {
-            HStack {
-                IndividualMoodtrackerView(room: room, isPartner: false)
-                Divider().padding()
-                IndividualMoodtrackerView(room: room, isPartner: true)
+        VStack(alignment: .leading) {
+            Text("Moodtracker").bold()
+            BaseContainer(size: .medium) {
+                HStack {
+                    IndividualMoodtrackerView(room: room, isPartner: false)
+                    Divider().padding()
+                    IndividualMoodtrackerView(room: room, isPartner: true)
+                }
             }
         }
     }

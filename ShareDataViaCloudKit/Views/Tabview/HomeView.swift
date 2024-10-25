@@ -16,17 +16,20 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             Color.gray.opacity(0.2).ignoresSafeArea(.all)
-            VStack {
+            ScrollView {
                 HStack {
                     ThinkingOfYouHomeView(room: room)
                     
                     Spacer()
                 }
                 Spacer()
-                CoupleMoodtrackerView(room: room)
-                Button("Update your mood") {
+                
+                Button {
                     isMoodtrackerSheetPresented.toggle()
-                }
+                    HapticsManager.medium.generate()
+                } label: {
+                    CoupleMoodtrackerView(room: room)
+                }.buttonStyle(PlainButtonStyle())
 
                 Spacer()
             }.padding()

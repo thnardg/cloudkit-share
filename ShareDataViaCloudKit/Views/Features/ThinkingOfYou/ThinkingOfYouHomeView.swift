@@ -11,8 +11,11 @@ struct ThinkingOfYouHomeView: View {
     let room: Room
 
     var body: some View {
-        HomeContainer(title: "Thinking of You", size: .small) {
-            ThinkingOfYouView(room: room)
+        VStack(alignment: .leading) {
+            Text("Thinking Of You").bold()
+            BaseContainer(size: .small) {
+                ThinkingOfYouView(room: room)
+            }
         }
     }
 }

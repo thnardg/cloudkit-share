@@ -7,47 +7,24 @@
 
 import SwiftUI
 
-// MARK: -- Base pra criação dos blocos da home
-struct HomeContainer<Content: View>: View {
-    var title: String
+struct BaseContainer<Content: View>: View {
     var size: ContainerSize
     var content: () -> Content
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title).bold()
-            
-            VStack {
-                content()
-            }
-            .background(Color.white)
-            .cornerRadius(22)
-            .frame(width: size.dimensions.width, height: size.dimensions.height)
+        VStack {
+            content()
+                .frame(
+                    maxWidth: size.isFixedWidth ? size.dimensions.width : .infinity,
+                    minHeight: size.dimensions.height,
+                    maxHeight: size.dimensions.height
+                )
         }
+        .background(Color.white)
+        .cornerRadius(22)
     }
 }
 
-// MARK: -- Base pra criação de blocos (sem título)
-struct BasicContainer<Content: View>: View {
-    var title: String
-    var size: ContainerSize
-    var content: () -> Content
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(title).bold()
-            
-            VStack {
-                content()
-            }
-            .background(Color.white)
-            .cornerRadius(22)
-            .frame(width: size.dimensions.width, height: size.dimensions.height)
-        }
-    }
-}
-
-// MARK: -- Tamanho fixo dos containers
 enum ContainerSize {
     case small
     case medium
@@ -58,9 +35,18 @@ enum ContainerSize {
         case .small:
             return (158, 158)
         case .medium:
-            return (UIScreen.main.bounds.width, 158)
+            return (0, 158)
         case .large:
-            return (UIScreen.main.bounds.width, 354)
+            return (0, 354)
+        }
+    }
+    
+    var isFixedWidth: Bool {
+        switch self {
+        case .small:
+            return true
+        case .medium, .large:
+            return false
         }
     }
 }
