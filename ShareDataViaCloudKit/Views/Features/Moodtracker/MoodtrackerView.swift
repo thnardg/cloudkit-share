@@ -30,6 +30,7 @@ struct MoodtrackerView: View {
             LazyVGrid(columns: self.columns) {
                 ForEach(Array(Mood.allCases.enumerated()), id: \.element) { index, mood in
                     Button(action: {
+                        HapticsManager.medium.generate()
                         selectedMoodIndex = selectedMoodIndex == index ? nil : index
                     }) {
                         VStack {
@@ -57,6 +58,7 @@ struct MoodtrackerView: View {
                        let currentUser = viewmodel.users.first(where: { $0.id == userUUID }) {
                         let selectedMood = Mood.allCases[selectedIndex]
                         viewmodel.addOrUpdateMood(for: currentUser, selectedMood: selectedMood)
+                        HapticsManager.medium.generate()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }) {
