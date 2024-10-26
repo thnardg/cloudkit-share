@@ -12,11 +12,12 @@ class RichTextEditorView: UIView, UITextViewDelegate {
     private let textView = UITextView()
     private let characterLimit = 280
     private let characterCountLabel = UILabel()
-
+    private let buttonsStackView = UIStackView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupTextView()
-        setupToolbar()
+        setupButtons()
         setupCharacterCountLabel()
     }
     
@@ -36,20 +37,51 @@ class RichTextEditorView: UIView, UITextViewDelegate {
             textView.leadingAnchor.constraint(equalTo: leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: trailingAnchor),
             textView.topAnchor.constraint(equalTo: topAnchor),
-            textView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30) // Leave space for the counter
+            textView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -50)
         ])
     }
     
-    private func setupToolbar() {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
+    private func setupButtons() {
+        // Create custom button configuration
+        var config = UIButton.Configuration.bordered()
+        config.cornerStyle = .medium
+        config.baseForegroundColor = .blue
+        config.background.backgroundColor = .clear
         
-        let boldButton = UIBarButtonItem(title: "Bold", style: .plain, target: self, action: #selector(toggleBold))
-        let italicButton = UIBarButtonItem(title: "Italic", style: .plain, target: self, action: #selector(toggleItalic))
+        // Bold button
+        let boldButton = UIButton(configuration: config)
+        boldButton.setTitle("B", for: .normal)
+        boldButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        boldButton.addTarget(self, action: #selector(toggleBold), for: .touchUpInside)
         
-        toolbar.items = [boldButton, italicButton]
+        // Italic button
+        let italicButton = UIButton(configuration: config)
+        italicButton.setTitle("I", for: .normal)
+        italicButton.titleLabel?.font = .italicSystemFont(ofSize: 16)
+        italicButton.addTarget(self, action: #selector(toggleItalic), for: .touchUpInside)
         
-        textView.inputAccessoryView = toolbar
+        // Setup stack view
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.axis = .horizontal
+        buttonsStackView.spacing = 10
+        buttonsStackView.alignment = .center
+        
+        // Add buttons to stack view
+        buttonsStackView.addArrangedSubview(boldButton)
+        buttonsStackView.addArrangedSubview(italicButton)
+        
+        // Add stack view to main view
+        addSubview(buttonsStackView)
+        
+        // Configure constraints
+        NSLayoutConstraint.activate([
+            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            buttonsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            boldButton.widthAnchor.constraint(equalToConstant: 40),
+            boldButton.heightAnchor.constraint(equalToConstant: 30),
+            italicButton.widthAnchor.constraint(equalToConstant: 40),
+            italicButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     private func setupCharacterCountLabel() {
@@ -61,37 +93,54 @@ class RichTextEditorView: UIView, UITextViewDelegate {
         
         NSLayoutConstraint.activate([
             characterCountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            characterCountLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
+            characterCountLabel.centerYAnchor.constraint(equalTo: buttonsStackView.centerYAnchor)
         ])
     }
     
-    @objc private func toggleBold() {
-        toggleAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16))
-    }
-    
-    @objc private func toggleItalic() {
-        toggleAttribute(.font, value: UIFont.italicSystemFont(ofSize: 16))
-    }
-    
-    @objc private func toggleUnderline() {
-        toggleAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue)
-    }
-    
-    private func toggleAttribute(_ attribute: NSAttributedString.Key, value: Any) {
+    private func toggleAttribute(_ attribute: NSAttributedString.Key, bold: Bool = false, italic: Bool = false) {
         let selectedRange = textView.selectedRange
         guard selectedRange.length > 0 else { return }
         
         let attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
         let currentAttributes = attributedText.attributes(at: selectedRange.location, longestEffectiveRange: nil, in: selectedRange)
         
-        if currentAttributes[attribute] == nil {
-            attributedText.addAttribute(attribute, value: value, range: selectedRange)
-        } else {
-            attributedText.removeAttribute(attribute, range: selectedRange)
+        let currentFont = (currentAttributes[.font] as? UIFont) ?? UIFont.systemFont(ofSize: 16)
+        let currentFontSize = currentFont.pointSize
+        
+        let fontDescriptor = currentFont.fontDescriptor
+        var traits = fontDescriptor.symbolicTraits
+        
+        if bold {
+            if traits.contains(.traitBold) {
+                traits.remove(.traitBold)
+            } else {
+                traits.insert(.traitBold)
+            }
+        }
+        
+        if italic {
+            if traits.contains(.traitItalic) {
+                traits.remove(.traitItalic)
+            } else {
+                traits.insert(.traitItalic)
+            }
+        }
+        
+        if let newDescriptor = fontDescriptor.withSymbolicTraits(traits) {
+            let newFont = UIFont(descriptor: newDescriptor, size: currentFontSize)
+            attributedText.addAttribute(.font, value: newFont, range: selectedRange)
         }
         
         textView.attributedText = attributedText
         textView.selectedRange = selectedRange
+    }
+    
+    @objc private func toggleBold() {
+        toggleAttribute(.font, bold: true)
+    }
+    
+    @objc private func toggleItalic() {
+        toggleAttribute(.font, italic: true)
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -113,7 +162,7 @@ struct RichTextEditor: UIViewRepresentable {
     func makeUIView(context: Context) -> RichTextEditorView {
         return RichTextEditorView()
     }
-
+    
     func updateUIView(_ uiView: RichTextEditorView, context: Context) {
     }
 }
@@ -121,11 +170,22 @@ struct RichTextEditor: UIViewRepresentable {
 struct ContentView: View {
     var body: some View {
         VStack {
+            HStack {
+                Text("Cancel")
+                    .foregroundStyle(.blue)
+                Spacer()
+                Text("New Little Note")
+                    .font(.headline)
+                Spacer()
+                Text("Send").foregroundStyle(.blue)
+            }
+            Spacer()
             RichTextEditor()
                 .frame(height: 300)
                 .padding()
-                .background(Color.gray.opacity(0.3))
-                .cornerRadius(10)
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(20)
+            Spacer()
         }
         .padding()
     }

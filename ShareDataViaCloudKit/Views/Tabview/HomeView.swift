@@ -27,6 +27,8 @@ struct HomeView: View {
                         }
                         Spacer() // tirar esse spacer quando adicionar os outros blocos
                         // TODO: -- Adicionar a pergunta do dia aqui com padding top 25
+                        
+                        LittleNoteHomeView().padding(.top, 25)
                         // TODO: -- Adicionar o recado aqui com padding top 25
                         
                         Button {
