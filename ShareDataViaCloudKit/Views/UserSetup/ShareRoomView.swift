@@ -21,50 +21,65 @@ struct ShareRoomView: View {
     @State private var selectedRoom: Room?
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            // Exibe o nome da sala, se disponível
+        ZStack {
+            Color.blue.ignoresSafeArea()
             if let room = selectedRoom {
-                Text(room.name ?? "Unnamed Room")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                
                 let isShared = CoreDataStack.shared.isShared(object: room)
                 
+                // HOST
                 if !isShared {
-                    Button(action: {
-                        Task {
-                            await viewModel.createShare(for: room)
-                            showShareController = true
+                    VStack {
+                        Spacer()
+                        Text("Share your love").font(.title).padding().bold()
+                        Text("Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá").multilineTextAlignment(.center).font(.subheadline).padding(20)
+                        Image(systemName: "heart").resizable().scaledToFit().padding().frame(width: 150)
+                        Button(action: {
+                            Task {
+                                await viewModel.createShare(for: room)
+                                showShareController = true
+                            }
+                        }) {
+                            HStack {
+                                Image(systemName: "heart.fill")
+                                Text("Invite Partner")
+                            }
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 14)
+                            .foregroundColor(.white).bold()
+                            .background(Color.black)
+                            .cornerRadius(100)
+                            .padding()
                         }
-                    }) {
-                        HStack {
-                            Image(systemName: "arrow.up.heart.fill")
-                            Text("Invite Partner")
+                        
+                        NavigationLink(destination: NewUserView(room: room)) {
+                            Text("Skip")
+                                .foregroundStyle(.black)
+                                .padding()
                         }
-                        .padding()
-                        .foregroundColor(.white).bold()
-                        .background(Color.purple)
-                        .cornerRadius(100)
-                        .padding(.horizontal)
+                        Spacer()
                     }
-                    .padding(.bottom, 30)
                 }
                 
+                // CONVIDADO
                 if isShared {
-                    NavigationLink(destination: NewUserView(room: room)) {
-                        Text("Proceed to Create Users")
-                            .padding()
-                            .foregroundColor(.white).bold()
-                            .background(Color.purple)
-                            .cornerRadius(100)
-                            .padding(.horizontal)
+                    VStack {
+                        Spacer()
+                        Text("Welcome!").font(.title).padding().bold()
+                        Text("Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá Blábláblá").multilineTextAlignment(.center).font(.subheadline).padding(20)
+                        Image(systemName: "heart").resizable().scaledToFit().padding().frame(width: 150)
+                        NavigationLink(destination: NewUserView(room: room)) {
+                            Text("Continue")
+                                .padding(.horizontal, 40)
+                                .padding(.vertical, 14)
+                                .foregroundColor(.white).bold()
+                                .background(Color.black)
+                                .cornerRadius(100)
+                                .padding()
+                        }
                     }
                 }
             } else {
-                Text("Nenhuma sala disponível")
+                Text("Nothing is being shared")
                     .font(.title2)
                     .foregroundColor(.secondary)
                     .padding()
