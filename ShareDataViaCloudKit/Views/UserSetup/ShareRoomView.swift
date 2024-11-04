@@ -85,7 +85,7 @@ struct ShareRoomView: View {
         }
     }
     
-    // Função para determinar qual sala usar
+    // Função para determinar qual parâmetro passar pra frente
     private func determineRoom() -> Room? {
         if let sharedRoom = rooms.first(where: { room in
             CoreDataStack.shared.isShared(object: room) && !CoreDataStack.shared.isOwner(object: room)

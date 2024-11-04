@@ -11,16 +11,16 @@ struct NewRoomView: View {
     )
     private var rooms: FetchedResults<Room>
     
-    @State private var createdRoom: Room? = nil         // Track the created room
-    @State private var isNavigatingToShareRoom = false  // Control navigation state
-    @State private var showDeleteConfirmation = false   // Control the delete confirmation alert
+    @State private var createdRoom: Room? = nil
+    @State private var isNavigatingToShareRoom = false  // controla a navegação
+    @State private var showDeleteConfirmation = false   // deletar a sala
 
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
                 
-                // Display existing room if available
+                // mostra a sala se existir uma
                 if let room = createdRoom ?? rooms.first {
                     HStack {
                         if viewModel.isShared(room) {
@@ -48,20 +48,20 @@ struct NewRoomView: View {
                 
                 Spacer()
                 
-                // Create Room or Go to Room Button
+                // cria e navega pra sala
                 Button(action: {
                     withAnimation {
-                        if rooms.isEmpty { // Check if there are no existing rooms
-                            viewModel.addRoom()            // Create a room
+                        if rooms.isEmpty { // checa se nenhuma sala existe
+                            viewModel.addRoom()
                             
-                            // Force refresh the createdRoom
+                            // força a view a recarregar
                             DispatchQueue.main.async {
-                                createdRoom = rooms.first // Make sure to update after the addRoom
-                                isNavigatingToShareRoom = true // Trigger navigation
+                                createdRoom = rooms.first // faz um update na ciew
+                                isNavigatingToShareRoom = true // dá o trigger na navegação
                             }
                         } else {
-                            createdRoom = rooms.first      // Get the existing room
-                            isNavigatingToShareRoom = true // Trigger navigation
+                            createdRoom = rooms.first      // mostra a sala atual
+                            isNavigatingToShareRoom = true // trigger na navegação
                         }
                     }
                 }) {
@@ -79,15 +79,15 @@ struct NewRoomView: View {
 
                 .padding(.bottom, 30)
                 
-                // Trigger navigation for ShareRoomView
+                // determina o destino da navegação
                 .navigationDestination(isPresented: $isNavigatingToShareRoom) {
                         ShareRoomView()
                     
                 }
                 
-                // Delete All Rooms Button
+                // MARK: -- DELETA AS SALAS PRA TESTEA
                  Button(action: {
-                     showDeleteConfirmation = true // Show confirmation alert
+                     showDeleteConfirmation = true
                  }) {
                      Text("Delete All Rooms")
                          .padding()
@@ -100,17 +100,17 @@ struct NewRoomView: View {
                  .alert("Are you sure you want to delete all rooms?", isPresented: $showDeleteConfirmation) {
                      Button("Cancel", role: .cancel) { }
                      Button("Delete", role: .destructive) {
-                         deleteAllRooms() // Call method to delete all rooms
+                         deleteAllRooms()
                      }
                  }
             }
             .navigationTitle("Widgetogether")
         }
     }
-    // Function to delete all rooms
+    // função pra deletar a sala (Teste)
     private func deleteAllRooms() {
         for room in rooms {
-            viewModel.deleteRoom(room) // Delete each room using the existing deleteRoom method
+            viewModel.deleteRoom(room)
         }
     }
 }

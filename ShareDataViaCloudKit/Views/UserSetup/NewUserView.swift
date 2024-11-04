@@ -72,8 +72,9 @@ struct NewUserView: View {
             }
             Spacer()
         
+        //PERMITE ENTRAR NO APP MESMO SEM TER 2 USERS (mas não mais do que 2 ou menos que 1
             VStack {
-                if users.count >= 2 {
+                if users.count == 2 || users.count == 1 {
                         NavigationLink(destination: MainTabView(room: room)) {
                             Text("Go to shared room")
                             Image(systemName: "arrow.right")
