@@ -6,28 +6,33 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ShareRoomView: View {
-    let room: Room
-
+    @FetchRequest(
+        entity: Room.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Room.timestamp, ascending: false)],
+        animation: .default
+    )
+    private var rooms: FetchedResults<Room>
+    
     @StateObject private var viewModel = ShareRoomViewModel()
     @State private var showShareController = false
-
+    @State private var selectedRoom: Room?
+    
     var body: some View {
         VStack {
             Spacer()
             
-            // Display the room name
-            Text(room.name ?? "Unnamed Room")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding()
-
-            // Check if the current user is the owner and if the room is shared
-            let isOwner = CoreDataStack.shared.isOwner(object: room)
-            let isShared = CoreDataStack.shared.isShared(object: room)
-
-
+            // Exibe o nome da sala, se disponível
+            if let room = selectedRoom {
+                Text(room.name ?? "Unnamed Room")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                
+                let isShared = CoreDataStack.shared.isShared(object: room)
+                
                 if !isShared {
                     Button(action: {
                         Task {
@@ -47,30 +52,53 @@ struct ShareRoomView: View {
                     }
                     .padding(.bottom, 30)
                 }
-            
-            
-            // Show Proceed to Create Users button if the room is shared
-            if isShared {
-                NavigationLink(destination: NewUserView(room: room)) {
-                    Text("Proceed to Create Users")
-                        .padding()
-                        .foregroundColor(.white).bold()
-                        .background(Color.purple)
-                        .cornerRadius(100)
-                        .padding(.horizontal)
+                
+                if isShared {
+                    NavigationLink(destination: NewUserView(room: room)) {
+                        Text("Proceed to Create Users")
+                            .padding()
+                            .foregroundColor(.white).bold()
+                            .background(Color.purple)
+                            .cornerRadius(100)
+                            .padding(.horizontal)
+                    }
                 }
+            } else {
+                Text("Nenhuma sala disponível")
+                    .font(.title2)
+                    .foregroundColor(.secondary)
+                    .padding()
             }
-
-            // Show a progress view if sharing is in progress
+            
             if viewModel.sharing {
                 ProgressView("Sharing...")
             }
         }
+        .onAppear {
+            selectedRoom = determineRoom()
+        }
         .sheet(isPresented: $showShareController) {
-            if let share = CoreDataStack.shared.getShare(room) {
+            if let room = selectedRoom, let share = CoreDataStack.shared.getShare(room) {
                 CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)
                     .ignoresSafeArea()
             }
         }
+    }
+    
+    // Função para determinar qual sala usar
+    private func determineRoom() -> Room? {
+        if let sharedRoom = rooms.first(where: { room in
+            CoreDataStack.shared.isShared(object: room) && !CoreDataStack.shared.isOwner(object: room)
+        }) {
+            return sharedRoom
+        }
+        
+        if let ownedRoom = rooms.first(where: { room in
+            CoreDataStack.shared.isOwner(object: room)
+        }) {
+            return ownedRoom
+        }
+        
+        return rooms.first
     }
 }

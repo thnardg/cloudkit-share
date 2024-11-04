@@ -81,9 +81,8 @@ struct NewRoomView: View {
                 
                 // Trigger navigation for ShareRoomView
                 .navigationDestination(isPresented: $isNavigatingToShareRoom) {
-                    if let room = createdRoom {
-                        ShareRoomView(room: room)
-                    }
+                        ShareRoomView()
+                    
                 }
                 
                 // Delete All Rooms Button
