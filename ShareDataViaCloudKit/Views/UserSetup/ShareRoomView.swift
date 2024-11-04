@@ -9,62 +9,68 @@ import SwiftUI
 
 struct ShareRoomView: View {
     let room: Room
-    @StateObject private var viewModel = ShareRoomViewModel()
 
+    @StateObject private var viewModel = ShareRoomViewModel()
     @State private var showShareController = false
-    
-    
+
     var body: some View {
         VStack {
             Spacer()
-            Button(action: {
-                Task {
-                    await viewModel.createShare(for: room)
-                    showShareController = true
-                }
-            }) {
-                HStack {
-                    Image(systemName: "arrow.up.heart.fill")
-                    Text("Invite Partner")
-                }
+            
+            // Display the room name
+            Text(room.name ?? "Unnamed Room")
+                .font(.largeTitle)
+                .fontWeight(.bold)
                 .padding()
-                .foregroundColor(.white).bold()
-                .background(Color.purple)
-                .cornerRadius(100)
-                .padding(.horizontal)
-            }
-            .padding(.bottom, 30)
-            if viewModel.sharing {
-                ProgressView("Sharing...")
-            }
-        }
-            VStack {
-                if countParticipants() {
-                    NavigationLink(destination: NewUserView(room: room)) {
-                        Text("Create users")
-                        Image(systemName: "arrow.right")
-                    }.padding()
+
+            // Check if the current user is the owner and if the room is shared
+            let isOwner = CoreDataStack.shared.isOwner(object: room)
+            let isShared = CoreDataStack.shared.isShared(object: room)
+
+
+                if !isShared {
+                    Button(action: {
+                        Task {
+                            await viewModel.createShare(for: room)
+                            showShareController = true
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "arrow.up.heart.fill")
+                            Text("Invite Partner")
+                        }
+                        .padding()
+                        .foregroundColor(.white).bold()
+                        .background(Color.purple)
+                        .cornerRadius(100)
+                        .padding(.horizontal)
+                    }
+                    .padding(.bottom, 30)
+                }
+            
+            
+            // Show Proceed to Create Users button if the room is shared
+            if isShared {
+                NavigationLink(destination: NewUserView(room: room)) {
+                    Text("Proceed to Create Users")
+                        .padding()
                         .foregroundColor(.white).bold()
                         .background(Color.purple)
                         .cornerRadius(100)
                         .padding(.horizontal)
                 }
-                Spacer()
             }
+
+            // Show a progress view if sharing is in progress
+            if viewModel.sharing {
+                ProgressView("Sharing...")
+            }
+        }
         .sheet(isPresented: $showShareController) {
-            let share = CoreDataStack.shared.getShare(room)!
-            CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)
-                .ignoresSafeArea()
+            if let share = CoreDataStack.shared.getShare(room) {
+                CloudSharingView(share: share, container: CoreDataStack.shared.ckContainer, room: room)
+                    .ignoresSafeArea()
+            }
         }
-        
     }
-    
-    // TODO: separar isso numa view model
-    private func countParticipants() -> Bool {
-        if let share = CoreDataStack.shared.getShare(room) {
-            return share.participants.count >= 2
-        }
-        return false
-    }
-    
 }
