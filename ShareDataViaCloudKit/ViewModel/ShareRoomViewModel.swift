@@ -13,7 +13,9 @@ class ShareRoomViewModel: ObservableObject {
     @Published var sharing = false
     
     func createShare(for room: Room) async {
-        sharing = true
+        DispatchQueue.main.async {
+            self.sharing = true
+        }
         do {
             let (_, share, _) = try await stack.persistentContainer.share([room], to: nil)
             share[CKShare.SystemFieldKey.title] = room.name
@@ -21,7 +23,9 @@ class ShareRoomViewModel: ObservableObject {
             print("Failed to create share")
             sharing = false
         }
-        sharing = false
+        DispatchQueue.main.async {
+            self.sharing = false
+        }
     }
 
     func isShared(room: Room) -> Bool {

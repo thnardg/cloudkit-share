@@ -18,93 +18,44 @@ struct NewRoomView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                // MARK: -- DELETA AS SALAS PRA TESTEA
+                 Button(action: {
+                     deleteAllRooms()
+                 }) {
+                     Text("Delete All Rooms").foregroundStyle(.purple)
+                 }
                 Spacer()
-                
-                // mostra a sala se existir uma
-                if let room = createdRoom ?? rooms.first {
-                    HStack {
-                        if viewModel.isShared(room) {
-                            if viewModel.isOwner(room) {
-                                Image(systemName: "arrow.up.heart.fill")
-                                    .foregroundColor(.pink)
-                            } else {
-                                Image(systemName: "arrow.down.heart.fill")
-                                    .foregroundColor(.pink)
-                            }
-                        }
-                        if !viewModel.canEdit(room) {
-                            Image(systemName: "heart.slash.fill")
-                                .foregroundColor(.red)
-                        }
-                        Text(room.name ?? "")
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(8)
-                } else {
-                    Text("No room created yet")
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-                
-                // cria e navega pra sala
-                Button(action: {
-                    withAnimation {
-                        if rooms.isEmpty { // checa se nenhuma sala existe
-                            viewModel.addRoom()
-                            
-                            // força a view a recarregar
-                            DispatchQueue.main.async {
-                                createdRoom = rooms.first // faz um update na ciew
-                                isNavigatingToShareRoom = true // dá o trigger na navegação
-                            }
-                        } else {
-                            createdRoom = rooms.first      // mostra a sala atual
-                            isNavigatingToShareRoom = true // trigger na navegação
-                        }
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: "plus")
-                        Text(rooms.isEmpty ? "Create New Room" : "Go to Room")
-                    }
-                    .padding()
-                    .foregroundColor(.white)
+                Text("Discover a new way to strenghten your relationship")
+                    .font(.system(.title, design: .rounded))
                     .bold()
-                    .background(Color.purple)
-                    .cornerRadius(100)
-                    .padding(.horizontal)
-                }
-
-                .padding(.bottom, 30)
+                    .padding()
+                    .multilineTextAlignment(.center)
                 
+                Text("Express affection daily in an easy and fun way with our exclusive widgets.")
+                    .font(.system(.subheadline, design: .rounded))
+                    .padding(.bottom, 40)
+                    .multilineTextAlignment(.center)
+
+                OnboardingButton(title: "Continue") {
+                    if rooms.isEmpty {
+                        viewModel.addRoom()
+                        
+                        // força a view a recarregar
+                        DispatchQueue.main.async {
+                            createdRoom = rooms.first
+                            isNavigatingToShareRoom = true // dá o trigger na navegação
+                        }
+                    } else {
+                        createdRoom = rooms.first // a sala atual
+                        isNavigatingToShareRoom = true // trigger na navegação
+                    }
+                }.padding(.bottom, 40)
                 // determina o destino da navegação
                 .navigationDestination(isPresented: $isNavigatingToShareRoom) {
                         ShareRoomView()
                     
                 }
-                
-                // MARK: -- DELETA AS SALAS PRA TESTEA
-                 Button(action: {
-                     showDeleteConfirmation = true
-                 }) {
-                     Text("Delete All Rooms")
-                         .padding()
-                         .foregroundColor(.white)
-                         .bold()
-                         .background(Color.red)
-                         .cornerRadius(100)
-                         .padding(.horizontal)
-                 }
-                 .alert("Are you sure you want to delete all rooms?", isPresented: $showDeleteConfirmation) {
-                     Button("Cancel", role: .cancel) { }
-                     Button("Delete", role: .destructive) {
-                         deleteAllRooms()
-                     }
-                 }
             }
-            .navigationTitle("Widgetogether")
         }
     }
     // função pra deletar a sala (Teste)

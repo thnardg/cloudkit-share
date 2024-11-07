@@ -16,6 +16,7 @@ struct ThinkingOfYouView: View {
     
     @FetchRequest private var users: FetchedResults<User>
     @FetchRequest private var partnersThoughts: FetchedResults<Thought>
+    @FetchRequest private var usersThoughts: FetchedResults<Thought>
     
     init(room: Room) {
         self.room = room
@@ -28,18 +29,41 @@ struct ThinkingOfYouView: View {
         _partnersThoughts = FetchRequest(entity: Thought.entity(),
                                          sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)],
                                          predicate: NSPredicate(format: "user.room == %@ AND user.id != %@ AND hasThoughtOnPartner == true", room, UserDefaults.standard.string(forKey: "userUUID") ?? ""),
-                                         animation: .default
-        )
+                                         animation: .default)
+        
+        _usersThoughts = FetchRequest(entity: Thought.entity(),
+                                      sortDescriptors: [NSSortDescriptor(key: "timestamp", ascending: false)],
+                                      predicate: NSPredicate(format: "user.room == %@ AND user.id == %@ AND hasThoughtOnPartner == true", room, UserDefaults.standard.string(forKey: "userUUID") ?? ""),
+                                      animation: .default)
     }
     
     var body: some View {
-        
         VStack(alignment: .leading) {
             if let latestPartnerThought = partnersThoughts.first {
+                // se o parceiro pensou
                 let partnerName = latestPartnerThought.user?.userName ?? "Parceiro"
-                Text("\(partnerName) is thinking about you!").font(.subheadline).bold().foregroundStyle(.black)
-                Text(latestPartnerThought.timestamp?.formattedForDisplay() ?? "Couldn't find the time").font(.caption2).italic().foregroundStyle(.gray)
+                Text("\(partnerName) is thinking about you!")
+                    .font(.system(.subheadline, design: .rounded))
+                    .bold()
+                    .foregroundStyle(.black)
+                Text(latestPartnerThought.timestamp?.formattedForDisplay() ?? "Couldn't find the time")
+                    .font(.caption2)
+                    .italic()
+                    .foregroundStyle(.gray)
+            } else if let latestUserThought = usersThoughts.first {
+                // se eu pensei e o parceiro não
+                Text("We'll let your partner know you're thinking about them")
+                    .font(.system(.subheadline, design: .rounded))
+                    .bold()
+                    .foregroundStyle(.black)
+            } else {
+                // default
+                Text("Let your partner know you're thinking about them")
+                    .font(.system(.subheadline, design: .rounded))
+                    .bold()
+                    .foregroundStyle(.gray)
             }
+            
             Spacer()
             
             HomeWidgetButton(title: "Think of Them", action: {
@@ -47,6 +71,7 @@ struct ThinkingOfYouView: View {
                     viewModel.addOrUpdateThought(for: currentUser, hasThoughtOnPartner: true)
                 }
             })
-        }.padding(16)
+        }
+        .padding(16)
     }
 }

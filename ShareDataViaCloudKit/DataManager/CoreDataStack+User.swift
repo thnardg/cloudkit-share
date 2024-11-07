@@ -26,7 +26,9 @@ extension CoreDataStack {
                 print("Error fetching existing owners: \(error)")
                 return
             }
-        } else {
+        }
+        
+        if !isOwner {
             // IMPEDE MAIS DE UM SHARED NA SALA
             fetchRequest.predicate = NSPredicate(format: "room == %@ AND isOwner == false", room)
             do {

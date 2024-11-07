@@ -39,3 +39,28 @@ struct HomeWidgetButton: View {
 #Preview {
     HomeWidgetButton(title: "Think Of Them", action: {})
 }
+
+
+struct OnboardingButton: View {
+    var title: String
+    var action: () -> Void
+    var backgroundColor: Color = .purple
+    var foregroundColor: Color = .white
+
+    var body: some View {
+        Button(action: {
+            withAnimation {
+                action()
+                HapticsManager.success.generate()
+            }
+        }) {
+            Text(title)
+                .font(.system(.body, design: .rounded)).bold()
+                .padding(.horizontal, 40)
+                .padding()
+                .foregroundColor(foregroundColor)
+                .background(backgroundColor)
+                .cornerRadius(100)
+        }
+    }
+}
