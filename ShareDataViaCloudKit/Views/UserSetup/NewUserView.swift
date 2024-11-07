@@ -27,22 +27,20 @@ struct NewUserView: View {
     
     var body: some View {
         VStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Seu nome") // Title text
-                        .font(.headline)
-                    
-                    HStack {
-                        Image(systemName: "person.fill") // Icon inside the TextField
-                            .foregroundColor(.gray)
-                        
-                        TextField("Seu nome", text: $userName)
-                            .textFieldStyle(PlainTextFieldStyle()) // Plain style to avoid rounded borders
+            HStack {
+                if !users.isEmpty {
+                    ForEach(users, id: \.self) { user in
+                        UserCard(user: user)
                     }
-                    .padding(10)
-                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray, lineWidth: 1))
-                    .padding(.horizontal)
                 }
+            }.padding()
+        }.padding(.vertical)
+        
 
+            VStack {
+                TextField("Seu nome", text: $userName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
                 
                 DatePicker("Aniversário", selection: $userBirthday, displayedComponents: .date)
                     .frame(maxWidth: .infinity)
@@ -62,11 +60,6 @@ struct NewUserView: View {
                         stack.addUser(isOwner: true, to: room, id: userUUID, userBirthday: userBirthday, userName: userName)
                     } else {
                         stack.addUser(isOwner: false, to: room, id: userUUID, userBirthday: userBirthday, userName: userName)
-                        print("----------------------------------------------------------------------------")
-                        print("User Details:")
-                        print("UUID: \(userUUID)")
-                        print("Name: \(userName)")
-                        print("Birthday: \(userBirthday)")
                     }
                 } label: {
                     Image(systemName: "plus")
@@ -79,11 +72,11 @@ struct NewUserView: View {
             }
             Spacer()
         
-        //PERMITE ENTRAR NO APP MESMO SEM TER 2 USERS (mas não mais do que 2 ou menos que 1
             VStack {
-                if users.count <= 2 || users.count == 1 {
+                if users.count >= 2 {
                         NavigationLink(destination: MainTabView(room: room)) {
-                            Text("Done")
+                            Text("Go to shared room")
+                            Image(systemName: "arrow.right")
                         }.padding()
                             .foregroundColor(.white).bold()
                             .background(Color.purple)
@@ -93,5 +86,30 @@ struct NewUserView: View {
             }
             .padding(.bottom)
         
+    }
+}
+
+struct UserCard: View {
+    let user: User
+    
+    var body: some View {
+        VStack {
+            Text(user.userName ?? "")
+                .font(.headline)
+            
+            Text(formatDate(user.userBirthday ?? Date()))
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
     }
 }

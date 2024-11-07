@@ -27,7 +27,6 @@ final class SceneDelegate: NSObject, UIWindowSceneDelegate {
             if let error = error {
                 print("acceptShareInvitation error: \(error)")
             } else {
-                // Post a notification when the share is accepted
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .didAcceptCloudKitShare, object: nil)
                 }

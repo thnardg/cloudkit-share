@@ -15,11 +15,12 @@ struct ShareRoomView: View {
         animation: .default
     )
     private var rooms: FetchedResults<Room>
-    
+    @Environment(\.presentationMode) private var presentationMode  // Access the environment variable
+
     @StateObject private var viewModel = ShareRoomViewModel()
     @State private var showShareController = false
     @State private var selectedRoom: Room?
-    @State private var showWelcome: Bool = false
+
     var body: some View {
         ZStack {
             if let room = selectedRoom {
@@ -27,7 +28,7 @@ struct ShareRoomView: View {
                 let isOwner = CoreDataStack.shared.isOwner(object: room)
                 
                 // HOST
-                if !isShared && !showWelcome {
+                if !isShared {
                     VStack {
                         Spacer()
                         Text("Invite Your Partner").font(.title).padding().bold().multilineTextAlignment(.center)
@@ -51,7 +52,7 @@ struct ShareRoomView: View {
                     }
                 }
                 
-                if isShared && isOwner || isOwner && showWelcome {
+                if isShared && isOwner {
                     VStack {
                         Spacer()
                         Text("Invite Your Partner").font(.title).padding().bold().multilineTextAlignment(.center)
@@ -80,7 +81,7 @@ struct ShareRoomView: View {
                 }
                 
                 // CONVIDADO
-                if showWelcome && !isOwner || isShared && !isOwner {
+                if isShared && !isOwner {
                     VStack {
                         Spacer()
                         Text("You've got a special invitation!").font(.title).padding().bold().multilineTextAlignment(.center)
@@ -111,8 +112,7 @@ struct ShareRoomView: View {
                 ProgressView("Sharing...")
             }
         }.onReceive(NotificationCenter.default.publisher(for: .didAcceptCloudKitShare)) { _ in
-            showWelcome = true
-            selectedRoom = determineRoom()
+            presentationMode.wrappedValue.dismiss()
         }
         .onAppear {
             selectedRoom = determineRoom()
