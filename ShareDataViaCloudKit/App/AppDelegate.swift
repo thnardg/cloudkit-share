@@ -19,14 +19,21 @@ final class AppDelegate:NSObject,UIApplicationDelegate{
     }
 }
 
-final class SceneDelegate:NSObject,UIWindowSceneDelegate{
+final class SceneDelegate: NSObject, UIWindowSceneDelegate {
     func windowScene(_ windowScene: UIWindowScene, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         let shareStore = CoreDataStack.shared.sharedPersistentStore
         let persistentContainer = CoreDataStack.shared.persistentContainer
-        persistentContainer.acceptShareInvitations(from: [cloudKitShareMetadata], into: shareStore, completion: { metas,error in
+        persistentContainer.acceptShareInvitations(from: [cloudKitShareMetadata], into: shareStore, completion: { metas, error in
             if let error = error {
-                print("accepteShareInvitation error :\(error)")
+                print("acceptShareInvitation error: \(error)")
+            } else {
+                // Post a notification when the share is accepted
+                NotificationCenter.default.post(name: .didAcceptCloudKitShare, object: nil)
             }
         })
     }
+}
+
+extension Notification.Name {
+    static let didAcceptCloudKitShare = Notification.Name("didAcceptCloudKitShare")
 }

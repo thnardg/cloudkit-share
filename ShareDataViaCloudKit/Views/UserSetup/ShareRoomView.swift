@@ -19,7 +19,7 @@ struct ShareRoomView: View {
     @StateObject private var viewModel = ShareRoomViewModel()
     @State private var showShareController = false
     @State private var selectedRoom: Room?
-    
+    @State private var showWelcome: Bool = false
     var body: some View {
         ZStack {
             Color.blue.ignoresSafeArea()
@@ -27,7 +27,7 @@ struct ShareRoomView: View {
                 let isShared = CoreDataStack.shared.isShared(object: room)
                 
                 // HOST
-                if !isShared {
+                if !isShared && !showWelcome {
                     VStack {
                         Spacer()
                         Text("Share your love").font(.title).padding().bold()
@@ -61,7 +61,7 @@ struct ShareRoomView: View {
                 }
                 
                 // CONVIDADO
-                if isShared {
+                if showWelcome || isShared {
                     VStack {
                         Spacer()
                         Text("Welcome!").font(.title).padding().bold()
@@ -88,6 +88,8 @@ struct ShareRoomView: View {
             if viewModel.sharing {
                 ProgressView("Sharing...")
             }
+        }.onReceive(NotificationCenter.default.publisher(for: .didAcceptCloudKitShare)) { _ in
+            showWelcome = true
         }
         .onAppear {
             selectedRoom = determineRoom()
