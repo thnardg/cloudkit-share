@@ -94,10 +94,10 @@ struct ShareRoomView: View {
                     VStack {
                         Spacer()
                         Text("You've got a special invitation!").font(.title).padding().bold().multilineTextAlignment(.center)
-                        Text("Accept the invite to unlock special features that help keep your love strong and your connection even closer.").multilineTextAlignment(.center).font(.subheadline).padding(.horizontal, 25)
+                        Text("Accept the invite to unlock special features that help keep your love strong and your connection even closer.").multilineTextAlignment(.center).font(.subheadline).padding(.horizontal)
                         Spacer()
                         Image(.carta1).frame(maxWidth: 276, maxHeight: 383)
-                            .aspectRatio(1, contentMode: .fit).padding()
+                            .aspectRatio(1, contentMode: .fit).padding(.vertical, 40)
                         NavigationLink(destination: NewUserView(room: room)) {
                             Text("Accept")
                                 .font(.system(.body, design: .rounded)).bold()
