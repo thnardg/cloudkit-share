@@ -95,9 +95,9 @@ import SwiftUI
 struct NewUserView: View {
     let room: Room
     private let stack = CoreDataStack.shared
-
+    
     @Environment(\.sizeCategory) var sizeCategory
-
+    
     @FetchRequest private var users: FetchedResults<User>
     @AppStorage("userUUID") private var userUUID: String = ""
     
@@ -117,12 +117,14 @@ struct NewUserView: View {
     init(room: Room) {
         self.room = room
         _users = FetchRequest(entity: User.entity(),
-                            sortDescriptors: [],
-                            predicate: NSPredicate(format: "%K = %@", #keyPath(User.room), room),
-                            animation: .default)
+                              sortDescriptors: [],
+                              predicate: NSPredicate(format: "%K = %@", #keyPath(User.room), room),
+                              animation: .default)
     }
     
     var body: some View {
+        ZStack {
+            Color.gray.opacity(0.2).ignoresSafeArea(.all)
         VStack {
             VStack {
                 RoundedRectangle(cornerRadius: 10)
@@ -145,7 +147,7 @@ struct NewUserView: View {
                 InputField(title: "Your Name", text: $userName, icon: "person.fill").focused($isTextFieldFocused)
                 
                 PickerSection(title: "Pronouns", options: ["She / her", "He / him", "They / them"], selection: $userPronoun)
-
+                
                 DatePickerSection(
                     title: "Your Birthday",
                     date: $userBirthday,
@@ -165,7 +167,7 @@ struct NewUserView: View {
             } label: {
                 
             }
-
+            
             NavigationLink {
                 MainTabView(room: room)
             } label: {
@@ -177,7 +179,7 @@ struct NewUserView: View {
                     .background(.purple)
                     .cornerRadius(100)
             }
-           // .disabled(users.count > 2 ? false : true)
+            .disabled(users.count > 2 ? true : false)
             .padding(.top, 40)
             .simultaneousGesture(TapGesture().onEnded {
                 HapticsManager.success.generate()
@@ -196,6 +198,7 @@ struct NewUserView: View {
         .padding()
         .environment(\.sizeCategory, limitedSizeCategory)
     }
+}
 }
 
 // MARK: - InputField Component
