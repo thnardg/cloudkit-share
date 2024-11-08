@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+/*
 struct NewUserView: View {
     let room: Room
     @State private var userName: String = ""
@@ -88,45 +88,38 @@ struct NewUserView: View {
         
     }
 }
-
-struct UserCard: View {
-    let user: User
-    
-    var body: some View {
-        VStack {
-            Text(user.userName ?? "")
-                .font(.headline)
-            
-            Text(formatDate(user.userBirthday ?? Date()))
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
-    }
-}
-
+*/
 
 import SwiftUI
 
-struct NewUserView2: View {
+struct NewUserView: View {
+    let room: Room
+    private let stack = CoreDataStack.shared
+
+    @Environment(\.sizeCategory) var sizeCategory
+
+    @FetchRequest private var users: FetchedResults<User>
+    @AppStorage("userUUID") private var userUUID: String = ""
+    
     @State private var userName: String = ""
     @State private var userBirthday: Date = Calendar.current.date(from: DateComponents(year: 2001, month: 3, day: 28)) ?? Date()
     @State private var relationshipAnniversary: Date = Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 8)) ?? Date()
     @State private var isBirthdayPickerPresented: Bool = false
     @State private var isAnniversaryPickerPresented: Bool = false
-    @Environment(\.sizeCategory) var sizeCategory
+    @State private var userPronoun: String = "She / her"
+    
+    @FocusState private var isTextFieldFocused: Bool
     
     var limitedSizeCategory: ContentSizeCategory {
         return sizeCategory > .extraExtraExtraLarge ? .extraExtraExtraLarge : sizeCategory
+    }
+    
+    init(room: Room) {
+        self.room = room
+        _users = FetchRequest(entity: User.entity(),
+                            sortDescriptors: [],
+                            predicate: NSPredicate(format: "%K = %@", #keyPath(User.room), room),
+                            animation: .default)
     }
     
     var body: some View {
@@ -149,10 +142,10 @@ struct NewUserView2: View {
             
             
             VStack(spacing: 30) {
-                InputField(title: "Your Name", text: $userName, icon: "person.fill")
+                InputField(title: "Your Name", text: $userName, icon: "person.fill").focused($isTextFieldFocused)
                 
-                PickerSection(title: "Pronouns", options: ["She / her", "He / him", "They / them"], selection: .constant("She / her"))
-                
+                PickerSection(title: "Pronouns", options: ["She / her", "He / him", "They / them"], selection: $userPronoun)
+
                 DatePickerSection(
                     title: "Your Birthday",
                     date: $userBirthday,
@@ -167,10 +160,38 @@ struct NewUserView2: View {
                     icon: "heart.fill"
                 )
             }
-            
-            OnboardingButton(title: "Done") {
-                print("done")
-            }.padding(.top, 40)
+            Button {
+                
+            } label: {
+                
+            }
+
+            NavigationLink {
+                MainTabView(room: room)
+            } label: {
+                Text("Done")
+                    .font(.system(.body, design: .rounded)).bold()
+                    .padding(.horizontal, 40)
+                    .padding(.vertical, 14)
+                    .foregroundStyle(.white)
+                    .background(.purple)
+                    .cornerRadius(100)
+            }
+           // .disabled(users.count > 2 ? false : true)
+            .padding(.top, 40)
+            .simultaneousGesture(TapGesture().onEnded {
+                HapticsManager.success.generate()
+                
+                if userUUID.isEmpty {
+                    userUUID = UUID().uuidString
+                }
+                
+                if stack.isOwner(object: room) || !stack.isShared(object: room) {
+                    stack.addUser(isOwner: true, to: room, id: userUUID, userBirthday: userBirthday, userName: userName, userPronouns: userPronoun)
+                } else {
+                    stack.addUser(isOwner: false, to: room, id: userUUID, userBirthday: userBirthday, userName: userName, userPronouns: userPronoun)
+                }
+            })
         }
         .padding()
         .environment(\.sizeCategory, limitedSizeCategory)
@@ -257,9 +278,9 @@ struct DatePickerSection: View {
             }) {
                 HStack {
                     Image(systemName: icon)
-                        .foregroundColor(.gray.opacity(0.4))
+                        .foregroundStyle(.gray.opacity(0.4))
                     Text(date, style: .date)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.black)
                         .padding(.vertical, 10)
                         .font(.system(.callout, design: .rounded))
                     Spacer()
@@ -286,6 +307,29 @@ struct DatePickerSection: View {
     }
 }
 
-#Preview {
-    NewUserView2()
+
+
+struct UserCard: View {
+    let user: User
+    
+    var body: some View {
+        VStack {
+            Text(user.userName ?? "")
+                .font(.headline)
+            
+            Text(formatDate(user.userBirthday ?? Date()))
+                .font(.subheadline)
+                .foregroundStyle(.black)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
+    }
 }

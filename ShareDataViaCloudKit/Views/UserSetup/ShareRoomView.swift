@@ -153,7 +153,7 @@ struct ShareRoomView: View {
         }
         
         if let ownedRoom = rooms.first(where: { room in
-            CoreDataStack.shared.isOwner(object: room)
+            CoreDataStack.shared.isOwner(object: room) || !CoreDataStack.shared.isShared(object: room)
         }) {
             return ownedRoom
         }

@@ -10,7 +10,7 @@ import CoreData
 
 // MARK: -- USUÁRIOS
 extension CoreDataStack {
-    func addUser(isOwner: Bool, to room: Room, id: String, userBirthday: Date, userName: String) {
+    func addUser(isOwner: Bool, to room: Room, id: String, userBirthday: Date, userName: String, userPronouns: String) {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
         
         // IMPEDE MAIS DE UM DONO NA SALA
@@ -51,6 +51,7 @@ extension CoreDataStack {
             user.isOwner = isOwner
             user.userName = userName
             user.userBirthday = userBirthday
+            user.userPronouns = userPronouns
             self.save()
         }
     }
