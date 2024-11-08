@@ -57,7 +57,7 @@ struct OnboardingButton: View {
             Text(title)
                 .font(.system(.body, design: .rounded)).bold()
                 .padding(.horizontal, 40)
-                .padding()
+                .padding(.vertical, 14)
                 .foregroundColor(foregroundColor)
                 .background(backgroundColor)
                 .cornerRadius(100)

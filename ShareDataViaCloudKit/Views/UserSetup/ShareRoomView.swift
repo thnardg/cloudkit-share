@@ -15,7 +15,7 @@ struct ShareRoomView: View {
         animation: .default
     )
     private var rooms: FetchedResults<Room>
-    @Environment(\.presentationMode) private var presentationMode  // Access the environment variable
+    @Environment(\.presentationMode) private var presentationMode
 
     @StateObject private var viewModel = ShareRoomViewModel()
     @State private var showShareController = false
@@ -31,11 +31,12 @@ struct ShareRoomView: View {
                 if !isShared {
                     VStack {
                         Spacer()
-                        Text("Invite Your Partner").font(.title).padding().bold().multilineTextAlignment(.center)
-                        Text("Connect with your partner for a complete experience and celebrate love and affection every day!").multilineTextAlignment(.center).font(.subheadline).padding(.horizontal, 25)
+                        Text("Invite Your Partner").font(.system(.title, design: .rounded)).padding().bold().multilineTextAlignment(.center)
+                        Text("Connect with your partner for a complete experience and celebrate love and affection every day!").multilineTextAlignment(.center)
+                            .font(.system(.subheadline, design: .rounded)).padding(.horizontal)
                         Spacer()
-                        RoundedRectangle(cornerRadius: 22).frame(width: 276, height: 383).foregroundStyle(.gray.opacity(0.2)).padding()
-                        
+                        Image(.selos1).frame(maxWidth: 276, maxHeight: 383)
+                            .aspectRatio(1, contentMode: .fit).padding(.vertical, 40)
                         OnboardingButton(title: "Invite your Partner") {
                             Task {
                                 await viewModel.createShare(for: room)
@@ -46,6 +47,7 @@ struct ShareRoomView: View {
                         NavigationLink(destination: NewUserView(room: room)) {
                             Text("Skip")
                                 .foregroundStyle(.purple)
+                                .font(.system(.body, design: .rounded))
                                 .padding()
                         }
                         Spacer()
@@ -55,27 +57,34 @@ struct ShareRoomView: View {
                 if isShared && isOwner {
                     VStack {
                         Spacer()
-                        Text("Invite Your Partner").font(.title).padding().bold().multilineTextAlignment(.center)
-                        Text("Connect with your partner for a complete experience and celebrate love and affection every day!").multilineTextAlignment(.center).font(.subheadline).padding(.horizontal, 25)
+                        Text("Invite Your Partner").font(.system(.title, design: .rounded)).padding().bold().multilineTextAlignment(.center)
+                        Text("Connect with your partner for a complete experience and celebrate love and affection every day!").multilineTextAlignment(.center)
+                            .font(.system(.subheadline, design: .rounded)).padding(.horizontal)
                         Spacer()
-                        RoundedRectangle(cornerRadius: 22).frame(width: 276, height: 383).foregroundStyle(.gray.opacity(0.2)).padding()
-                        
-                        OnboardingButton(title: "Invite your Partner") {
-                            Task {
-                                await viewModel.createShare(for: room)
-                                showShareController = true
-                            }
-                        }
+                        Image(.selos1).frame(maxWidth: 276, maxHeight: 383)
+                            .aspectRatio(1, contentMode: .fit).padding(.vertical, 40)
                         
                         NavigationLink(destination: NewUserView(room: room)) {
                             Text("Continue")
                                 .font(.system(.body, design: .rounded)).bold()
                                 .padding(.horizontal, 40)
-                                .padding()
+                                .padding(.vertical, 14)
                                 .foregroundColor(.white)
-                                .background(Color.purple)
+                                .background(.purple)
                                 .cornerRadius(100)
                         }
+                        
+                        Button {
+                            Task {
+                                await viewModel.createShare(for: room)
+                                showShareController = true
+                            }
+                        } label: {
+                            Text("Create a new invite")
+                        }.foregroundStyle(.purple)
+                            .font(.system(.body, design: .rounded))
+                            .padding()
+
                         Spacer()
                     }
                 }
@@ -87,8 +96,8 @@ struct ShareRoomView: View {
                         Text("You've got a special invitation!").font(.title).padding().bold().multilineTextAlignment(.center)
                         Text("Accept the invite to unlock special features that help keep your love strong and your connection even closer.").multilineTextAlignment(.center).font(.subheadline).padding(.horizontal, 25)
                         Spacer()
-                        RoundedRectangle(cornerRadius: 22).frame(maxWidth: 276, maxHeight: 383).foregroundStyle(.gray.opacity(0.2)).padding()
-                        
+                        Image(.carta1).frame(maxWidth: 276, maxHeight: 383)
+                            .aspectRatio(1, contentMode: .fit).padding()
                         NavigationLink(destination: NewUserView(room: room)) {
                             Text("Accept")
                                 .font(.system(.body, design: .rounded)).bold()
@@ -108,8 +117,18 @@ struct ShareRoomView: View {
                     .padding()
             }
             
+            // LOADING PRA PREPARAR O CONVITE
             if viewModel.sharing {
-                ProgressView("Sharing...")
+                Color.black.opacity(0.8).ignoresSafeArea(.all)
+                VStack(spacing: 12) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .tint(.white)
+                    Text("Preparing Invite...")
+                        .font(.system(.title2, design: .rounded))
+                        .bold()
+                        .foregroundStyle(.white)
+                }
             }
         }.onReceive(NotificationCenter.default.publisher(for: .didAcceptCloudKitShare)) { _ in
             presentationMode.wrappedValue.dismiss()
