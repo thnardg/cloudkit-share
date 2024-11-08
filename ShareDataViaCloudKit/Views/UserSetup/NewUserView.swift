@@ -73,7 +73,7 @@ struct NewUserView: View {
             Spacer()
         
             VStack {
-                if users.count >= 2 {
+                if users.count >= 1 && users.count <= 2 {
                         NavigationLink(destination: MainTabView(room: room)) {
                             Text("Go to shared room")
                             Image(systemName: "arrow.right")

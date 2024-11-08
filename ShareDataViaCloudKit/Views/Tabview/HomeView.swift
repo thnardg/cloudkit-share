@@ -43,6 +43,13 @@ struct HomeView: View {
                         // TODO: -- Adicionar outros countdowns aqui com padding top 25
                         
                         Spacer()
+                        // MARK: -- BOTÃO TEMPORÁRIO PRA DESCONECTAR DA SALA
+                        Button {
+                            viewModel.deleteRoom(room)
+                        } label: {
+                            Text("Disconnect 💔")
+                        }.padding(.top, 30)
+
                     }
                     .padding()
                 }
